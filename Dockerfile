@@ -7,15 +7,28 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# Usuario de aplicacion sin privilegios. No se asume UID/GID root en runtime,
+# lo que mantiene la imagen compatible con contenedores rootless (Podman).
+RUN groupadd --gid 1000 axentra \
+    && useradd --uid 1000 --gid axentra --create-home --shell /usr/sbin/nologin axentra
+
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-cache
 
 COPY . .
 
 # El build no depende de un archivo .env.build. Los valores seguros por
-# defecto y RepositoryEmpty permiten recolectar los estáticos.
+# defecto y RepositoryEmpty permiten recolectar los estaticos.
 RUN DJANGO_ENV=build DJANGO_SETTINGS_MODULE=core.settings.development \
     uv run python manage.py collectstatic --noinput
+
+# Directorios de escritura en tiempo de ejecucion, propiedad del usuario
+# de aplicacion (staticfiles/media ya existen tras collectstatic; logs y
+# sent_emails los crean los settings de cada entorno si no existen).
+RUN mkdir -p /app/staticfiles /app/media /app/logs /app/sent_emails \
+    && chown -R axentra:axentra /app
+
+USER axentra
 
 EXPOSE 8000
 

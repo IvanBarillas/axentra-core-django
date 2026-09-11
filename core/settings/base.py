@@ -2,16 +2,28 @@
 # core/settings/base.py
 from pathlib import Path
 from decouple import Config, RepositoryEmpty, RepositoryEnv
-import os  
+import os
+import warnings
 
 # =========================================================
 # CARGA DE ENTORNO EN RAÍZ
-# =========================================================  
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  
+# =========================================================
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 ENV = os.getenv("DJANGO_ENV", "dev")
 ENV_FILE = BASE_DIR / f".env.{ENV}"
-repository = RepositoryEnv(str(ENV_FILE)) if ENV_FILE.exists() else RepositoryEmpty()
+
+ENV_FILE_EXISTS = ENV_FILE.exists()
+if not ENV_FILE_EXISTS:
+    warnings.warn(
+        f"No se encontro el archivo de entorno '{ENV_FILE.name}' en {BASE_DIR}. "
+        "Se continua con una configuracion vacia (RepositoryEmpty); las "
+        "variables sin valor por defecto fallaran explicitamente al resolverse.",
+        RuntimeWarning,
+        stacklevel=2,
+    )
+
+repository = RepositoryEnv(str(ENV_FILE)) if ENV_FILE_EXISTS else RepositoryEmpty()
 config = Config(repository)
 
 # =========================================================
@@ -56,6 +68,16 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# =========================================================================
+# RUTA OFUSCADA DEL PANEL DE ADMINISTRACIÓN
+# =========================================================================
+# Fuente única de verdad para core/urls.py; evita instanciar un segundo
+# Config de decouple fuera de este archivo.
+ADMIN_SECRET_PATH = config(
+    "ADMIN_SECRET_PATH",
+    default="axentra-core-secret-portal-manager-wsl/",
+)
+
 # =========================================================
 # TEMPLATES (Estructura fija)
 # =========================================================
@@ -71,7 +93,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 
-                # 🪐 LOS INYECTORES DE GOBERNANZA GLOBAL DE AXENTRA OS
+                # LOS INYECTORES DE GOBERNANZA GLOBAL DE AXENTRA OS
                 'apps.shared.context_processors.global_tenant_settings',    # Activos de marca e identidad ({{ tenant }})
                 'apps.shared.context_processors.user_module_permissions',  # Lista de apps asignadas ({{ allowed_modules }})
                 "apps.shared.context_processors.satellite_navigation",
@@ -103,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # =========================================================================
-# 🛡️ CONFIGURACIÓN DE AUTENTICACIÓN Y REDIRECCIÓN CORE
+# CONFIGURACIÓN DE AUTENTICACIÓN Y REDIRECCIÓN CORE
 # =========================================================================
 # Destino definitivo tras un login exitoso (Apunta a tu path('launcher/', ...))
 LOGIN_REDIRECT_URL = 'index_hub'
@@ -135,6 +157,28 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
+
+# =========================================================================
+# CACHÉ (LocMemCache por defecto; Redis si CACHE_BACKEND=redis)
+# =========================================================================
+CACHE_BACKEND = config("CACHE_BACKEND", default="locmem")
+
+if CACHE_BACKEND == "redis":
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": config("REDIS_URL", default="redis://127.0.0.1:6379/1"),
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "axentra-core-locmem",
+        }
+    }
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True

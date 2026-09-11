@@ -3,16 +3,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from decouple import config
 from core.views import module_toggle_view
 from core.views import intro_portal_view, index_hub_view
 from apps.shared.module_sdk.routing import satellite_urlpatterns
 
-ADMIN_PATH = config('ADMIN_SECRET_PATH', default='axentra-core-secret-portal-manager-wsl/')
-
 urlpatterns = [
     # ──► 1. Panel de Administración Ofuscado
-    path(ADMIN_PATH, admin.site.urls),
+    path(settings.ADMIN_SECRET_PATH, admin.site.urls),
 
     # ──► 2. Compuerta Externa de Bienvenida (La raíz real de Axentra OS)
     path('', intro_portal_view, name='intro_portal'),

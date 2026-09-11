@@ -3,7 +3,7 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     env_file:
-      - .env.docker
+      - .env.container
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
     ports:
@@ -21,12 +21,18 @@ services:
       context: .
     command: uv run python manage.py runserver 0.0.0.0:8000
     restart: unless-stopped
+    # Alinea el UID/GID del proceso con el usuario del host para que los
+    # archivos escritos en el bind mount (db.sqlite3, sent_emails, etc.)
+    # sean editables fuera del contenedor bajo Podman rootless. Exporta
+    # UID/GID antes de levantar el stack, p. ej.:
+    #   UID=$(id -u) GID=$(id -g) podman-compose -f docker-compose.dev.yml up
+    user: "${UID:-1000}:${GID:-1000}"
     env_file:
-      - .env.docker
+      - .env.container
     environment:
-      DJANGO_ENV: docker
+      DJANGO_ENV: container
     volumes:
-      - .:/app
+      - .:/app:Z
       - /app/.venv
     ports:
       - "8000:8000"

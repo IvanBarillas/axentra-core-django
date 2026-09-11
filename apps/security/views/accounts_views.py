@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 @login_required
 @axentra_module_gate(module_identifier=AppIdentifier.ACCOUNTS, required_fine_permission="can_view_analytics")
 def accounts_analytics_view(request):
-    """📊 CONSOLA ANALÍTICA DE PERSONAL (Métricas y Cronología de Altas)"""
+    """CONSOLA ANALÍTICA DE PERSONAL (Métricas y Cronología de Altas)"""
     is_htmx = str(request.headers.get("HX-Request", "")).strip().lower() == "true"
     target_htmx = request.headers.get("HX-Target", "")
 
@@ -45,18 +45,19 @@ def accounts_analytics_view(request):
         "show_module_sidebar": False,
     })
 
-    # 📊 Registro Forense y Telemetría en el Radar
-    AxentraRadar.imprimir_auditoria(
-        componente="accounts_dashboard",
-        request=request,
-        titulo="Acceso a consola analítica de personal",
-        icono="📊",
-        extra_data={
-            "¿Es HTMX?": is_htmx,
-            "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
-            "Sidebar Secundario": context["show_module_sidebar"],
-        },
-    )
+    # Registro Forense y Telemetría en el Radar
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="accounts_dashboard",
+            request=request,
+            titulo="Acceso a consola analítica de personal",
+            icono="📊",
+            extra_data={
+                "¿Es HTMX?": is_htmx,
+                "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
+                "Sidebar Secundario": context["show_module_sidebar"],
+            },
+        )
 
     if is_htmx:
         if target_htmx == "workbench":
@@ -68,7 +69,7 @@ def accounts_analytics_view(request):
 
 
 # =========================================================================
-# 👤 PILAR UNIQUE: GESTIÓN DE EXPEDIENTES Y SERVIDORES PÚBLICOS
+# PILAR UNIQUE: GESTIÓN DE EXPEDIENTES Y SERVIDORES PÚBLICOS
 # =========================================================================
 @login_required
 @axentra_module_gate(AppIdentifier.ACCOUNTS, required_fine_permission="can_view_list")
@@ -178,7 +179,7 @@ def build_funcionario_list_context(request):
 @login_required
 @axentra_module_gate(AppIdentifier.ACCOUNTS, required_fine_permission="can_view_list")
 def funcionario_detail_view(request, pk: uuid.UUID):
-    """👤 EXPEDIENTE CONTEXTUAL DE FUNCIONARIO (Workspace Principal)"""
+    """EXPEDIENTE CONTEXTUAL DE FUNCIONARIO (Workspace Principal)"""
     is_htmx = str(request.headers.get("HX-Request", "")).strip().lower() == "true"
     target_htmx = request.headers.get("HX-Target", "")
 
@@ -211,7 +212,7 @@ def funcionario_detail_view(request, pk: uuid.UUID):
                 "href": reverse(url_name, args=[funcionario.id]),
                 "order": item.get("order", 99),
                 "provider": item.get("provider", AppIdentifier.ACCOUNTS),
-                # 🟢 Dinámico: Evalúa cuál está activa en la petición real
+                # Dinámico: Evalúa cuál está activa en la petición real
                 "active": url_name == current_sub_view,
             })
 
@@ -226,22 +227,23 @@ def funcionario_detail_view(request, pk: uuid.UUID):
         "show_module_sidebar": True,
     }
 
-    # 🧬 Radar Forense Axentra
-    AxentraRadar.imprimir_auditoria(
-        componente="accounts_view",
-        request=request,
-        titulo="Entrada a funcionario_detail_view",
-        icono="🧬",
-        extra_data={
-            "Funcionario": funcionario.email,
-            "Funcionario ID": str(funcionario.id),
-            "¿Es petición HTMX?": is_htmx,
-            "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
-            "Sidebar Contextual": True,
-            "Items Contextuales": len(detail_menu),
-            "Providers": ", ".join(sorted({item["provider"] for item in detail_menu})) if detail_menu else "Sin providers",
-        },
-    )
+    # Radar Forense Axentra
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="accounts_view",
+            request=request,
+            titulo="Entrada a funcionario_detail_view",
+            icono="🧬",
+            extra_data={
+                "Funcionario": funcionario.email,
+                "Funcionario ID": str(funcionario.id),
+                "¿Es petición HTMX?": is_htmx,
+                "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
+                "Sidebar Contextual": True,
+                "Items Contextuales": len(detail_menu),
+                "Providers": ", ".join(sorted({item["provider"] for item in detail_menu})) if detail_menu else "Sin providers",
+            },
+        )
 
     if is_htmx and target_htmx == "workbench":
         return render(request, "accounts/workbench/funcionario_detail_workbench.html", context)
@@ -254,7 +256,7 @@ def funcionario_detail_view(request, pk: uuid.UUID):
 @axentra_module_gate(AppIdentifier.ACCOUNTS, required_fine_permission="can_create_user")
 def funcionario_create_view(request):
     """
-    👤 CONTROLADOR DE ALTA DE FUNCIONARIOS
+    CONTROLADOR DE ALTA DE FUNCIONARIOS
 
     Tipo de pantalla:
     - Pertenece al módulo ACCOUNTS.
@@ -265,18 +267,19 @@ def funcionario_create_view(request):
     is_htmx = str(request.headers.get("HX-Request", "")).strip().lower() == "true"
     target_htmx = request.headers.get("HX-Target", "")
 
-    AxentraRadar.imprimir_auditoria(
-        componente="accounts_view",
-        request=request,
-        titulo="Entrada a funcionario_create_view",
-        icono="🧾",
-        extra_data={
-            "Método": request.method,
-            "¿Es petición HTMX?": is_htmx,
-            "HX-Target Recibido": target_htmx if target_htmx else "NINGUNO",
-            "HX-Current-URL": request.headers.get("HX-Current-URL", "N/A"),
-        },
-    )
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="accounts_view",
+            request=request,
+            titulo="Entrada a funcionario_create_view",
+            icono="🧾",
+            extra_data={
+                "Método": request.method,
+                "¿Es petición HTMX?": is_htmx,
+                "HX-Target Recibido": target_htmx if target_htmx else "NINGUNO",
+                "HX-Current-URL": request.headers.get("HX-Current-URL", "N/A"),
+            },
+        )
 
     if request.method == "POST":
         datos_saneados = request.POST.copy()
@@ -338,19 +341,20 @@ def funcionario_create_view(request):
         "show_module_sidebar": False,
     }
 
-    AxentraRadar.imprimir_auditoria(
-        componente="accounts_view",
-        request=request,
-        titulo="Despacho de Formulario de Alta",
-        icono="📡",
-        extra_data={
-            "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
-            "Módulo": context["modulo_actual"],
-            "Sidebar Secundario": context["show_module_sidebar"],
-            "Errores Form": form.errors.as_data() if form.errors else "Sin errores",
-            "Errores Profile Form": profile_form.errors.as_data() if profile_form.errors else "Sin errores",
-        },
-    )
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="accounts_view",
+            request=request,
+            titulo="Despacho de Formulario de Alta",
+            icono="📡",
+            extra_data={
+                "HX-Target": target_htmx if target_htmx else "F5 / URL directa",
+                "Módulo": context["modulo_actual"],
+                "Sidebar Secundario": context["show_module_sidebar"],
+                "Errores Form": form.errors.as_data() if form.errors else "Sin errores",
+                "Errores Profile Form": profile_form.errors.as_data() if profile_form.errors else "Sin errores",
+            },
+        )
 
     if is_htmx and target_htmx == "page-content":
         return render(

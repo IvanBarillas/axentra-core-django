@@ -54,7 +54,18 @@ def sync_installed_modules():
     return tuple(synchronized)
 
 
-def get_module_runtime_status(code, *, persist=False):
+def get_module_runtime_status(code, *, persist=False, _cache=None):
+    """Calcula el estado operativo de un módulo.
+
+    ``_cache`` es un diccionario opcional, con vida útil acotada a una sola
+    llamada de alto nivel (por ejemplo ``launcher_cards``), que evita repetir
+    las mismas consultas cuando el mismo código se resuelve más de una vez
+    en la misma operación. No se comparte entre requests ni persiste en el
+    proceso, para no servir estados de módulo obsoletos tras un toggle.
+    """
+    if _cache is not None and not persist and code in _cache:
+        return _cache[code]
+
     manifest = module_registry.get(code)
     if manifest is None:
         return None
@@ -102,6 +113,10 @@ def get_module_runtime_status(code, *, persist=False):
         module.save(update_fields=[
             "health_status", "health_message", "last_health_check_at", "updated_at"
         ])
+
+    if _cache is not None and not persist:
+        _cache[code] = status
+
     return status
 
 
@@ -114,8 +129,8 @@ def _is_root(user):
     )
 
 
-def user_can_open_module(user, code):
-    status = get_module_runtime_status(code)
+def user_can_open_module(user, code, *, _cache=None):
+    status = get_module_runtime_status(code, _cache=_cache)
     if not status or not status.available or not user or not user.is_authenticated:
         return False
     if _is_root(user):
@@ -131,11 +146,19 @@ def user_can_open_module(user, code):
 
 
 def launcher_cards(user):
-    sync_installed_modules()
+    """Construye las tarjetas del launcher a partir de módulos ya instalados.
+
+    No sincroniza metadatos: eso es responsabilidad exclusiva de
+    ``post_migrate`` (ver ``apps.security.apps``) y de los comandos de
+    management (``bootstrap_axentra_owner``, ``check_axentra_modules``).
+    """
     cards = []
     root = _is_root(user)
+    # Cache de una sola pasada: evita recalcular get_module_runtime_status
+    # para el mismo módulo cuando user_can_open_module lo vuelve a resolver.
+    status_cache = {}
     for manifest in module_registry.discover():
-        status = get_module_runtime_status(manifest.code, persist=False)
+        status = get_module_runtime_status(manifest.code, persist=False, _cache=status_cache)
         try:
             url = reverse(manifest.entry_url)
         except NoReverseMatch:
@@ -152,7 +175,7 @@ def launcher_cards(user):
             "health_label": status.health.value.replace("_", " ").title(),
             "message": status.message,
             "url": url,
-            "can_open": user_can_open_module(user, manifest.code),
+            "can_open": user_can_open_module(user, manifest.code, _cache=status_cache),
             "can_toggle": root and manifest.can_disable,
             "dependencies": manifest.dependencies,
             "optional_integrations": manifest.optional_integrations,

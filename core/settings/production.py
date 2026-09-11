@@ -2,19 +2,21 @@
 from .base import *
 import dj_database_url
 
-# 🚨 SEGURIDAD INMUTABLE DE PRODUCCIÓN (Obligatorio desde .env.prod)
+# SEGURIDAD INMUTABLE DE PRODUCCIÓN (Obligatorio desde .env.prod)
 DEBUG = False
 SECRET_KEY = config('SECRET_KEY')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
-# 🚨 BASE DE DATOS DE PRODUCCIÓN
+# BASE DE DATOS DE PRODUCCIÓN
 DATABASE_URL_STR = config('DATABASE_URL')
 DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL_STR)
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['CONN_MAX_AGE'] = config('DATABASE_CONN_MAX_AGE', default=60, cast=int)
+DATABASES['default']['CONN_HEALTH_CHECKS'] = True
 
-# 🚨 CORREO DE PRODUCCIÓN (SMTP)
+# CORREO DE PRODUCCIÓN (SMTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
@@ -31,7 +33,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
 CSRF_TRUSTED_ORIGINS = ['https://apps.axentra.com.mx']
 
-# 🚨 LOGS DE PRODUCCIÓN (Estructurados, persistidos en archivos para auditorías)
+# LOGS DE PRODUCCIÓN (Estructurados, persistidos en archivos para auditorías)
 LOG_DIR = BASE_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 

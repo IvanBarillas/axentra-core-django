@@ -29,16 +29,17 @@ def index_hub_view(request):
         or request.user.is_superuser
     )
 
-    AxentraRadar.imprimir_auditoria(
-        componente="index_hub_view",
-        request=request,
-        titulo="Acceso al launcher de aplicaciones",
-        icono="🏛️",
-        extra_data={
-            "Jurisdicción": "MASTER_BYPASS" if is_root else "OPERADOR_ESTÁNDAR",
-            "Identidad": request.user.email,
-        },
-    )
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="index_hub_view",
+            request=request,
+            titulo="Acceso al launcher de aplicaciones",
+            icono="🏛️",
+            extra_data={
+                "Jurisdicción": "MASTER_BYPASS" if is_root else "OPERADOR_ESTÁNDAR",
+                "Identidad": request.user.email,
+            },
+        )
 
     cards = module_center_cards(request.user)
     launcher_context = build_launcher_context(

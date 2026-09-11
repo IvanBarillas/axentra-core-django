@@ -244,20 +244,21 @@ def user_module_permissions(request):
             ).only("slug")
         ]
 
-        AxentraRadar.imprimir_auditoria(
-            componente="user_module_permissions",
-            request=request,
-            titulo="Bypass de Nivel Maestro Detectado",
-            icono="👑",
-            extra_data={
-                "Estado Privilegios": (
-                    f"SUPERUSER={request.user.is_superuser} | "
-                    f"MANAGER={getattr(request.user, 'is_manager', False)} | "
-                    f"ROOT_ADMIN={_usuario_es_root(request)}"
-                ),
-                "Módulos Forzados Globales": slugs_totales,
-            },
-        )
+        if AxentraRadar.enabled():
+            AxentraRadar.imprimir_auditoria(
+                componente="user_module_permissions",
+                request=request,
+                titulo="Bypass de Nivel Maestro Detectado",
+                icono="👑",
+                extra_data={
+                    "Estado Privilegios": (
+                        f"SUPERUSER={request.user.is_superuser} | "
+                        f"MANAGER={getattr(request.user, 'is_manager', False)} | "
+                        f"ROOT_ADMIN={_usuario_es_root(request)}"
+                    ),
+                    "Módulos Forzados Globales": slugs_totales,
+                },
+            )
 
         return {
             "is_global_admin": True,
@@ -281,20 +282,21 @@ def user_module_permissions(request):
         for role in roles_activos
     ]
 
-    AxentraRadar.imprimir_auditoria(
-        componente="user_module_permissions",
-        request=request,
-        titulo="Radar Perimetral de Launcher",
-        icono="🔍",
-        extra_data={
-            "Celdas Localizadas en BD": roles_activos.count(),
-            "Slugs Despachados al DOM": allowed_slugs,
-            "Análisis de Permisos": [
-                f"App: '{role.app.slug}' | Rol: '{role.role}' | Llaves: {role.permissions_list}"
-                for role in roles_activos
-            ] if roles_activos.exists() else "⚠️ ADVERTENCIA: 0 aplicativos para este ID.",
-        },
-    )
+    if AxentraRadar.enabled():
+        AxentraRadar.imprimir_auditoria(
+            componente="user_module_permissions",
+            request=request,
+            titulo="Radar Perimetral de Launcher",
+            icono="🔍",
+            extra_data={
+                "Celdas Localizadas en BD": roles_activos.count(),
+                "Slugs Despachados al DOM": allowed_slugs,
+                "Análisis de Permisos": [
+                    f"App: '{role.app.slug}' | Rol: '{role.role}' | Llaves: {role.permissions_list}"
+                    for role in roles_activos
+                ] if roles_activos.exists() else "⚠️ ADVERTENCIA: 0 aplicativos para este ID.",
+            },
+        )
 
     return {
         "is_global_admin": False,
