@@ -283,6 +283,20 @@ class TenantConfig(AxentraBaseModel):
         help_text="Número institucional con código de país, solo dígitos. Ej. 5219211234567.",
     )
 
+    whatsapp_default_message = models.CharField(
+        "Mensaje Inicial de WhatsApp",
+        max_length=255,
+        default="Hola, necesito asistencia en el Portal Digital de Axentra OS.",
+        blank=True,
+        help_text="Mensaje precargado que el ciudadano ve al abrir la conversación de WhatsApp.",
+    )
+
+    show_whatsapp_on_public_landing = models.BooleanField(
+        "Mostrar WhatsApp en Portada Pública",
+        default=True,
+        help_text="Controla si el botón flotante de WhatsApp aparece en la portada pública del Core.",
+    )
+
     class Meta:
         db_table = "axentra_core_tenant_config"
         verbose_name = "Configuración Institucional"

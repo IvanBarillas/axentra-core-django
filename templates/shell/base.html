@@ -114,6 +114,12 @@
 
     {% include "components/app_bottom_nav.html" %}
 
+    {% block whatsapp_widget %}
+        {% if tenant.enable_whatsapp_support and tenant.whatsapp_number and tenant.show_whatsapp_on_public_landing %}
+            {% include "components/whatsapp_flotante.html" %}
+        {% endif %}
+    {% endblock whatsapp_widget %}
+
     <div id="modal-root"></div>
     <div id="drawer-root"></div>
     <div id="toast-root"></div>

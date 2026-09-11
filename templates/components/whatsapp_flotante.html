@@ -14,7 +14,7 @@
     </div>
 
     <!-- Botón de Acción Principal -->
-    <a href="https://api.whatsapp.com/send?phone={{ tenant.whatsapp_number }}&text=Hola.%20Necesito%20asistencia%20en%20el%20Portal%20Digital%20de%20{{ tenant.app_name|default:'Axentra' }}."
+    <a href="https://wa.me/{{ tenant.whatsapp_number }}?text={{ tenant.whatsapp_default_message|default:'Hola, necesito asistencia en el Portal Digital de Axentra OS.'|urlencode }}"
        target="_blank"
        rel="noopener noreferrer"
        class="w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 border-2 border-white/20 focus:outline-none relative group-hover:rotate-6 wa-link-clear wa-action-circle"

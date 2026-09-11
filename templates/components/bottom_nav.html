@@ -174,7 +174,7 @@
                 </a>
 
                 {% if tenant.enable_whatsapp_support and tenant.whatsapp_number %}
-                <a href="https://api.whatsapp.com/send?phone={{ tenant.whatsapp_number }}&text=Hola.%20Necesito%20asistencia%20en%20el%20Ecosistema%20Gubernamental%20de%20{{ tenant.app_name|default:'Axentra' }}."
+                <a href="https://wa.me/{{ tenant.whatsapp_number }}?text={{ tenant.whatsapp_default_message|default:'Hola, necesito asistencia en el Portal Digital de Axentra OS.'|urlencode }}"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none relative"

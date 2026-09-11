@@ -31,6 +31,8 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "accent_color",
             "enable_whatsapp_support",
             "whatsapp_number",
+            "whatsapp_default_message",
+            "show_whatsapp_on_public_landing",
         ]
 
         widgets = {
@@ -86,6 +88,17 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
                     "inputmode": "numeric",
                 }
             ),
+            "whatsapp_default_message": forms.TextInput(
+                attrs={
+                    "placeholder": "Ej: Hola, necesito asistencia en el Portal Digital de Axentra OS.",
+                    "maxlength": "255",
+                }
+            ),
+            "show_whatsapp_on_public_landing": forms.CheckboxInput(
+                attrs={
+                    "class": "peer sr-only",
+                }
+            ),
         }
 
         labels = {
@@ -101,6 +114,8 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "accent_color": "Color de acento",
             "enable_whatsapp_support": "Soporte por WhatsApp",
             "whatsapp_number": "Número institucional de WhatsApp",
+            "whatsapp_default_message": "Mensaje inicial de WhatsApp",
+            "show_whatsapp_on_public_landing": "Mostrar en portada pública",
         }
 
         help_texts = {
@@ -110,6 +125,8 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "accent_color": "Color de acento para resaltados, estados activos y detalles interactivos.",
             "enable_whatsapp_support": "Muestra u oculta el botón flotante de contacto por WhatsApp en la portada pública.",
             "whatsapp_number": "Código de país + número, solo dígitos (sin espacios, guiones ni símbolo +). Ejemplo: 5219211234567.",
+            "whatsapp_default_message": "Texto precargado en la conversación de WhatsApp cuando el ciudadano abre el chat.",
+            "show_whatsapp_on_public_landing": "Interruptor específico para la portada pública del Core; aplicaciones satélite pueden definir su propia condición al sobreescribir el bloque whatsapp_widget.",
         }
 
     def __init__(self, *args, **kwargs):
