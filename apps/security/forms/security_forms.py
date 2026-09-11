@@ -26,10 +26,11 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "direccion_oficial",
             "rfc",
             "logo_light",
-            "primary_color_class",
             "primary_color",
             "secondary_color",
             "accent_color",
+            "enable_whatsapp_support",
+            "whatsapp_number",
         ]
 
         widgets = {
@@ -60,14 +61,6 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
                     "placeholder": "Ej: MCO850101AAA",
                 }
             ),
-            "primary_color_class": forms.Select(
-                choices=[
-                    ("slate-950", "Negro Corporativo"),
-                    ("blue-600", "Azul Eléctrico"),
-                    ("indigo-600", "Morado Tecnológico"),
-                    ("emerald-700", "Verde Institucional"),
-                ]
-            ),
             "logo_light": forms.ClearableFileInput(
                 attrs={
                     "class": (
@@ -82,6 +75,17 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "primary_color": ColorInput(),
             "secondary_color": ColorInput(),
             "accent_color": ColorInput(),
+            "enable_whatsapp_support": forms.CheckboxInput(
+                attrs={
+                    "class": "peer sr-only",
+                }
+            ),
+            "whatsapp_number": forms.TextInput(
+                attrs={
+                    "placeholder": "Ej: 5219211234567",
+                    "inputmode": "numeric",
+                }
+            ),
         }
 
         labels = {
@@ -92,18 +96,20 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "direccion_oficial": "Dirección legal de la sede central",
             "rfc": "Registro Federal de Contribuyentes",
             "logo_light": "Escudo / logotipo oficial",
-            "primary_color_class": "Color temático de acento",
             "primary_color": "Color primario",
             "secondary_color": "Color secundario",
             "accent_color": "Color de acento",
+            "enable_whatsapp_support": "Soporte por WhatsApp",
+            "whatsapp_number": "Número institucional de WhatsApp",
         }
 
         help_texts = {
             "municipality": "Municipio oficial asociado a esta instalación. Define el segmento [MUN] de folios patrimoniales. Ejemplo: 039 · COATZACOALCOS.",
-            "primary_color_class": "Color institucional usado como acento visual en la plataforma.",
             "primary_color": "Color primario de marca: chasis global, sidebar y botones principales.",
             "secondary_color": "Color secundario de apoyo para textos y superficies neutras de marca.",
             "accent_color": "Color de acento para resaltados, estados activos y detalles interactivos.",
+            "enable_whatsapp_support": "Muestra u oculta el botón flotante de contacto por WhatsApp en la portada pública.",
+            "whatsapp_number": "Código de país + número, solo dígitos (sin espacios, guiones ni símbolo +). Ejemplo: 5219211234567.",
         }
 
     def __init__(self, *args, **kwargs):
@@ -141,6 +147,18 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             )
 
         return rfc_crudo
-    
-  
-    
+
+    def clean_whatsapp_number(self):
+        numero_crudo = self.cleaned_data.get("whatsapp_number", "").strip()
+
+        if not numero_crudo:
+            return numero_crudo
+
+        solo_digitos = re.sub(r"\D", "", numero_crudo)
+
+        if not solo_digitos:
+            raise forms.ValidationError(
+                "Ingrese un número de WhatsApp válido, con código de país (solo dígitos)."
+            )
+
+        return solo_digitos

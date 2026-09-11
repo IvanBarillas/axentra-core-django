@@ -270,6 +270,19 @@ class TenantConfig(AxentraBaseModel):
         help_text="Color de acento de marca institucional en formato hexadecimal, ej. #059669.",
     )
 
+    enable_whatsapp_support = models.BooleanField(
+        "Habilitar Soporte por WhatsApp",
+        default=True,
+        help_text="Activa el botón flotante de contacto por WhatsApp en la portada pública.",
+    )
+
+    whatsapp_number = models.CharField(
+        "Número de WhatsApp Institucional",
+        max_length=20,
+        blank=True,
+        help_text="Número institucional con código de país, solo dígitos. Ej. 5219211234567.",
+    )
+
     class Meta:
         db_table = "axentra_core_tenant_config"
         verbose_name = "Configuración Institucional"

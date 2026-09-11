@@ -762,6 +762,8 @@ class TenantConfigAdmin(AxentraBaseAdminMixin, admin.ModelAdmin):
         "primary_color",
         "secondary_color",
         "accent_color",
+        "enable_whatsapp_support",
+        "whatsapp_number",
         "is_active",
         "is_deleted",
         "deleted_at",

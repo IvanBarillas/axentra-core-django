@@ -28,7 +28,7 @@
                     </h1>
 
                     <p class="mt-2 text-xs font-bold uppercase tracking-wider text-gray-400 leading-relaxed font-mono max-w-3xl">
-                        Defina el municipio oficial, activos de marca, logotipos, colores y datos legales que serán inyectados en toda la plataforma municipal.
+                        Defina el municipio oficial, activos de marca, canales de contacto y datos legales que serán inyectados en toda la plataforma municipal.
                     </p>
                 </div>
             </div>
@@ -48,7 +48,10 @@
         </div>
     </section>
 
-    <section class="rounded-2xl md:rounded-[32px] border border-gray-200/80 bg-white shadow-sm overflow-hidden">
+    <section
+        x-data="{ tab: '{% if form.enable_whatsapp_support.errors or form.whatsapp_number.errors %}integraciones{% elif form.municipality.errors or form.rfc.errors or form.direccion_oficial.errors %}legal{% else %}identidad{% endif %}' }"
+        class="rounded-2xl md:rounded-[32px] border border-gray-200/80 bg-white shadow-sm overflow-hidden"
+    >
 
         <header class="px-5 py-4 md:px-6 md:py-5 border-b border-gray-100">
             <div class="text-xs font-black uppercase tracking-[0.22em] text-slate-600 font-mono">
@@ -59,6 +62,44 @@
                 Personalización y datos oficiales
             </h2>
         </header>
+
+        {# ================================================================= #}
+        {# BARRA DE PESTAÑAS · un único formulario, tres vistas.              #}
+        {# Al ser un singleton (TenantConfig), las tres pestañas comparten un #}
+        {# solo <form> y un solo POST: guardar siempre persiste los tres      #}
+        {# grupos de campos a la vez, sin importar cuál esté visible.         #}
+        {# ================================================================= #}
+        <nav class="flex overflow-x-auto border-b border-gray-100 px-2 font-mono scrollbar-none" aria-label="Secciones de configuración institucional">
+            <button
+                type="button"
+                @click="tab = 'identidad'"
+                :class="tab === 'identidad' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-400 hover:text-gray-700'"
+                class="flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-xs font-black uppercase tracking-widest transition-colors cursor-pointer"
+            >
+                <i data-lucide="palette" class="h-3.5 w-3.5"></i>
+                Identidad y Marca
+            </button>
+
+            <button
+                type="button"
+                @click="tab = 'integraciones'"
+                :class="tab === 'integraciones' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-400 hover:text-gray-700'"
+                class="flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-xs font-black uppercase tracking-widest transition-colors cursor-pointer"
+            >
+                <i data-lucide="plug-zap" class="h-3.5 w-3.5"></i>
+                Integraciones y Canales
+            </button>
+
+            <button
+                type="button"
+                @click="tab = 'legal'"
+                :class="tab === 'legal' ? 'border-brand-primary text-brand-primary' : 'border-transparent text-gray-400 hover:text-gray-700'"
+                class="flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-xs font-black uppercase tracking-widest transition-colors cursor-pointer"
+            >
+                <i data-lucide="scale" class="h-3.5 w-3.5"></i>
+                Datos Legales y Fiscales
+            </button>
+        </nav>
 
         <div class="p-5 md:p-6">
 
@@ -99,123 +140,321 @@
 
                 <fieldset {% if not can_edit_tenant %}disabled{% endif %} class="space-y-5">
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="sm:col-span-2 space-y-1.5">
-                        <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                            Nombre comercial de la plataforma
-                        </label>
+                {# ========================================================= #}
+                {# TAB 1 · IDENTIDAD Y MARCA                                  #}
+                {# ========================================================= #}
+                <div x-show="tab === 'identidad'" x-cloak class="space-y-5">
 
-                        <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
-                            {{ form.app_name }}
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2 space-y-1.5">
+                            <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                                Nombre comercial de la plataforma
+                            </label>
+
+                            <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
+                                {{ form.app_name }}
+                            </div>
+
+                            {% if form.app_name.errors %}
+                                {% for error in form.app_name.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
                         </div>
 
-                        {% if form.app_name.errors %}
-                            {% for error in form.app_name.errors %}
-                                <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                    {{ error }}
-                                </p>
-                            {% endfor %}
-                        {% endif %}
+                        <div class="space-y-1.5">
+                            <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                                Siglas internas
+                            </label>
+
+                            <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-center [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
+                                {{ form.siglas }}
+                            </div>
+
+                            {% if form.siglas.errors %}
+                                {% for error in form.siglas.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
 
                     <div class="space-y-1.5">
                         <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                            Siglas internas
+                            Nombre oficial del ayuntamiento / institución
                         </label>
 
-                        <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-center [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
-                            {{ form.siglas }}
+                        <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
+                            {{ form.entidad_nombre }}
                         </div>
 
-                        {% if form.siglas.errors %}
-                            {% for error in form.siglas.errors %}
+                        {% if form.entidad_nombre.errors %}
+                            {% for error in form.entidad_nombre.errors %}
                                 <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
                                     {{ error }}
                                 </p>
                             {% endfor %}
                         {% endif %}
                     </div>
-                </div>
 
-                <div class="space-y-1.5">
-                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                        Nombre oficial del ayuntamiento / institución
-                    </label>
+                    <div class="border border-dashed border-gray-200 rounded-xl md:rounded-2xl p-4 md:p-5 bg-gray-50/50 space-y-3">
+                        <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                            Paleta institucional (branding dinámico)
+                        </label>
 
-                    <div class="w-full [&>input]:w-full [&>input]:bg-gray-50/60 [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:bg-white [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
-                        {{ form.entidad_nombre }}
-                    </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                    Color primario
+                                </label>
 
-                    {% if form.entidad_nombre.errors %}
-                        {% for error in form.entidad_nombre.errors %}
-                            <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                        {{ form.primary_color }}
+                                    </div>
+                                    <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                        {{ form.primary_color.value|default:"#6B1D2F" }}
+                                    </span>
+                                </div>
 
-                <div class="space-y-1.5">
-                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                        Municipio oficial de la instalación
-                    </label>
-
-                    <div class="w-full [&>select]:w-full [&>select]:bg-gray-50/60 [&>select]:border [&>select]:border-gray-200 [&>select]:rounded-xl [&>select]:px-4 [&>select]:py-2.5 [&>select]:outline-none [&>select]:focus:bg-white [&>select]:focus:border-gray-950 [&>select]:transition-all [&>select]:text-xs [&>select]:font-mono [&>select]:shadow-sm">
-                        {{ form.municipality }}
-                    </div>
-
-                    {% if form.municipality.errors %}
-                        {% for error in form.municipality.errors %}
-                            <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-xs md:text-xs text-gray-400 font-bold mt-1.5 font-mono uppercase tracking-tight leading-normal px-1">
-                            // Este municipio define la clave [MUN] para folios patrimoniales. Ejemplo: 039 · COATZACOALCOS.
-                        </p>
-                    {% endif %}
-                </div>
-
-                <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-4">
-                    <div class="flex items-start gap-3">
-                        <div class="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm">
-                            <i data-lucide="landmark" class="h-5 w-5"></i>
-                        </div>
-
-                        <div class="min-w-0">
-                            <p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700 font-mono">
-                                Identidad municipal activa
-                            </p>
-
-                            <p class="mt-1 text-xs font-bold uppercase tracking-wider text-emerald-900/80 leading-relaxed font-mono">
-                                El municipio seleccionado representa esta instalación de Axentra OS y alimenta el segmento
-                                <strong class="text-emerald-950">[MUN]</strong>
-                                en procesos patrimoniales, contables y documentales.
-                            </p>
-
-                            <div class="mt-3 rounded-lg border border-emerald-100 bg-white px-3 py-2 font-mono text-xs font-black text-emerald-950">
-                                {% if config.municipality %}
-                                    {{ config.municipality.code }}-26-5151-012-BM-0005
-                                {% else %}
-                                    MUN-26-5151-012-BM-0005
+                                {% if form.primary_color.errors %}
+                                    {% for error in form.primary_color.errors %}
+                                        <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
                                 {% endif %}
                             </div>
 
-                            {% if config.municipality %}
-                                <p class="mt-2 text-xs font-black uppercase tracking-wider text-emerald-800/70 font-mono">
-                                    Municipio actual: {{ config.municipality.code }} · {{ config.municipality.name }}
-                                </p>
+                            <div class="space-y-1.5">
+                                <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                    Color secundario
+                                </label>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                        {{ form.secondary_color }}
+                                    </div>
+                                    <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                        {{ form.secondary_color.value|default:"#4A5568" }}
+                                    </span>
+                                </div>
+
+                                {% if form.secondary_color.errors %}
+                                    {% for error in form.secondary_color.errors %}
+                                        <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                    Color de acento
+                                </label>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                        {{ form.accent_color }}
+                                    </div>
+                                    <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                        {{ form.accent_color.value|default:"#059669" }}
+                                    </span>
+                                </div>
+
+                                {% if form.accent_color.errors %}
+                                    {% for error in form.accent_color.errors %}
+                                        <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-dashed border-gray-200 rounded-xl md:rounded-2xl p-4 md:p-5 bg-gray-50/50 space-y-3">
+                        <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                            Escudo / logotipo oficial
+                        </label>
+
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            {% if config.logo_light %}
+                                <div class="w-16 h-16 bg-white border border-gray-200 rounded-xl p-2 flex items-center justify-center shadow-sm shrink-0 select-none mx-auto sm:mx-0">
+                                    <img
+                                        src="{{ config.logo_light.url }}"
+                                        alt="Escudo Actual"
+                                        class="max-h-full object-contain"
+                                    >
+                                </div>
                             {% else %}
-                                <p class="mt-2 text-xs font-black uppercase tracking-wider text-amber-700 font-mono">
-                                    Municipio pendiente de configurar.
+                                <div class="w-16 h-16 border-2 border-dashed border-gray-200 bg-white rounded-xl flex items-center justify-center text-xl text-gray-300 shrink-0 select-none mx-auto sm:mx-0">
+                                    🏛️
+                                </div>
+                            {% endif %}
+
+                            <div class="flex-1 w-full text-xs normal-case font-sans text-gray-500">
+                                <div class="font-mono text-xs md:text-xs text-gray-700 uppercase tracking-wide overflow-x-hidden max-w-full [&>input]:max-w-full [&>input]:text-xs [&>input]:cursor-pointer">
+                                    {{ form.logo_light }}
+                                </div>
+
+                                {% if form.logo_light.errors %}
+                                    {% for error in form.logo_light.errors %}
+                                        <p class="text-xs uppercase text-red-700 font-bold mt-1">
+                                            {{ error }}
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="text-xs md:text-xs text-gray-400 font-bold mt-2 font-mono uppercase tracking-tight leading-normal">
+                                        // Se sugiere PNG transparente, cuadrado y de alta fidelidad.
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {# ========================================================= #}
+                {# TAB 2 · INTEGRACIONES Y CANALES                            #}
+                {# ========================================================= #}
+                <div x-show="tab === 'integraciones'" x-cloak class="space-y-5">
+
+                    <div class="rounded-xl md:rounded-2xl border border-gray-200 bg-gray-50/50 p-4 md:p-5 space-y-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-start gap-3 min-w-0">
+                                <div class="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-sm">
+                                    <i data-lucide="message-circle" class="h-5 w-5"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-black text-gray-950 text-xs tracking-wider normal-case">
+                                        Botón flotante de WhatsApp
+                                    </p>
+                                    <p class="mt-1 text-xs text-gray-400 font-bold normal-case leading-relaxed">
+                                        {{ form.enable_whatsapp_support.help_text }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <label class="relative inline-flex shrink-0 cursor-pointer items-center">
+                                {{ form.enable_whatsapp_support }}
+                                <div class="h-6 w-11 rounded-full bg-gray-200 transition-colors peer-checked:bg-brand-accent peer-focus:ring-2 peer-focus:ring-brand-accent/40 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-sm after:transition-all after:content-[''] peer-checked:after:translate-x-5"></div>
+                            </label>
+                        </div>
+
+                        {% if form.enable_whatsapp_support.errors %}
+                            {% for error in form.enable_whatsapp_support.errors %}
+                                <p class="text-xs uppercase text-red-700 font-bold px-1">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="space-y-1.5 border-t border-gray-200 pt-4">
+                            <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                                Número institucional de WhatsApp
+                            </label>
+
+                            <div class="w-full [&>input]:w-full [&>input]:bg-white [&>input]:border [&>input]:border-gray-200 [&>input]:rounded-xl [&>input]:px-4 [&>input]:py-2.5 [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:transition-all [&>input]:text-xs [&>input]:font-mono [&>input]:shadow-sm">
+                                {{ form.whatsapp_number }}
+                            </div>
+
+                            {% if form.whatsapp_number.errors %}
+                                {% for error in form.whatsapp_number.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-xs text-gray-400 font-bold mt-1.5 font-mono uppercase tracking-tight leading-normal px-1">
+                                    // {{ form.whatsapp_number.help_text }}
+                                </p>
+                            {% endif %}
+
+                            {% if not config.whatsapp_number %}
+                                <p class="text-xs text-amber-700 font-black mt-1.5 font-mono uppercase tracking-tight leading-normal px-1">
+                                    // El botón flotante permanece oculto hasta configurar un número.
                                 </p>
                             {% endif %}
                         </div>
                     </div>
+
+                    <div class="rounded-xl border border-dashed border-gray-200 bg-white p-4 text-xs font-bold normal-case text-gray-400 leading-relaxed">
+                        Próximas integraciones (APIs externas, notificaciones y otros canales) se habilitarán en esta misma pestaña conforme se incorporen al Core.
+                    </div>
+
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {# ========================================================= #}
+                {# TAB 3 · DATOS LEGALES Y FISCALES                           #}
+                {# ========================================================= #}
+                <div x-show="tab === 'legal'" x-cloak class="space-y-5">
+
+                    <div class="space-y-1.5">
+                        <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                            Municipio oficial de la instalación
+                        </label>
+
+                        <div class="w-full [&>select]:w-full [&>select]:bg-gray-50/60 [&>select]:border [&>select]:border-gray-200 [&>select]:rounded-xl [&>select]:px-4 [&>select]:py-2.5 [&>select]:outline-none [&>select]:focus:bg-white [&>select]:focus:border-gray-950 [&>select]:transition-all [&>select]:text-xs [&>select]:font-mono [&>select]:shadow-sm">
+                            {{ form.municipality }}
+                        </div>
+
+                        {% if form.municipality.errors %}
+                            {% for error in form.municipality.errors %}
+                                <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-xs md:text-xs text-gray-400 font-bold mt-1.5 font-mono uppercase tracking-tight leading-normal px-1">
+                                // Este municipio define la clave [MUN] para folios patrimoniales. Ejemplo: 039 · COATZACOALCOS.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm">
+                                <i data-lucide="landmark" class="h-5 w-5"></i>
+                            </div>
+
+                            <div class="min-w-0">
+                                <p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700 font-mono">
+                                    Identidad municipal activa
+                                </p>
+
+                                <p class="mt-1 text-xs font-bold uppercase tracking-wider text-emerald-900/80 leading-relaxed font-mono">
+                                    El municipio seleccionado representa esta instalación de Axentra OS y alimenta el segmento
+                                    <strong class="text-emerald-950">[MUN]</strong>
+                                    en procesos patrimoniales, contables y documentales.
+                                </p>
+
+                                <div class="mt-3 rounded-lg border border-emerald-100 bg-white px-3 py-2 font-mono text-xs font-black text-emerald-950">
+                                    {% if config.municipality %}
+                                        {{ config.municipality.code }}-26-5151-012-BM-0005
+                                    {% else %}
+                                        MUN-26-5151-012-BM-0005
+                                    {% endif %}
+                                </div>
+
+                                {% if config.municipality %}
+                                    <p class="mt-2 text-xs font-black uppercase tracking-wider text-emerald-800/70 font-mono">
+                                        Municipio actual: {{ config.municipality.code }} · {{ config.municipality.name }}
+                                    </p>
+                                {% else %}
+                                    <p class="mt-2 text-xs font-black uppercase tracking-wider text-amber-700 font-mono">
+                                        Municipio pendiente de configurar.
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="space-y-1.5">
                         <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
                             Registro Federal de Contribuyentes
@@ -236,156 +475,26 @@
 
                     <div class="space-y-1.5">
                         <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                            Color temático de acento
+                            Dirección legal de la sede central
                         </label>
 
-                        <div class="w-full [&>select]:w-full [&>select]:bg-gray-50/60 [&>select]:border [&>select]:border-gray-200 [&>select]:rounded-xl [&>select]:px-4 [&>select]:py-2.5 [&>select]:outline-none [&>select]:focus:bg-white [&>select]:focus:border-gray-950 [&>select]:transition-all [&>select]:text-xs [&>select]:font-mono [&>select]:shadow-sm">
-                            {{ form.primary_color_class }}
+                        <div class="w-full [&>textarea]:w-full [&>textarea]:bg-gray-50/60 [&>textarea]:border [&>textarea]:border-gray-200 [&>textarea]:rounded-xl [&>textarea]:px-4 [&>textarea]:py-2.5 [&>textarea]:outline-none [&>textarea]:focus:bg-white [&>textarea]:focus:border-gray-950 [&>textarea]:transition-all [&>textarea]:text-xs [&>textarea]:font-mono [&>textarea]:shadow-sm [&>textarea]:resize-none">
+                            {{ form.direccion_oficial }}
                         </div>
 
-                        {% if form.primary_color_class.errors %}
-                            {% for error in form.primary_color_class.errors %}
+                        {% if form.direccion_oficial.errors %}
+                            {% for error in form.direccion_oficial.errors %}
                                 <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
                                     {{ error }}
                                 </p>
                             {% endfor %}
                         {% endif %}
                     </div>
-                </div>
 
-                <div class="border border-dashed border-gray-200 rounded-xl md:rounded-2xl p-4 md:p-5 bg-gray-50/50 space-y-3">
-                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                        Paleta institucional (branding dinámico)
-                    </label>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="space-y-1.5">
-                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
-                                Color primario
-                            </label>
-
-                            <div class="flex items-center gap-3">
-                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
-                                    {{ form.primary_color }}
-                                </div>
-                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
-                                    {{ form.primary_color.value|default:"#6B1D2F" }}
-                                </span>
-                            </div>
-
-                            {% if form.primary_color.errors %}
-                                {% for error in form.primary_color.errors %}
-                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                        {{ error }}
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
-                                Color secundario
-                            </label>
-
-                            <div class="flex items-center gap-3">
-                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
-                                    {{ form.secondary_color }}
-                                </div>
-                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
-                                    {{ form.secondary_color.value|default:"#4A5568" }}
-                                </span>
-                            </div>
-
-                            {% if form.secondary_color.errors %}
-                                {% for error in form.secondary_color.errors %}
-                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                        {{ error }}
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
-                                Color de acento
-                            </label>
-
-                            <div class="flex items-center gap-3">
-                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
-                                    {{ form.accent_color }}
-                                </div>
-                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
-                                    {{ form.accent_color.value|default:"#059669" }}
-                                </span>
-                            </div>
-
-                            {% if form.accent_color.errors %}
-                                {% for error in form.accent_color.errors %}
-                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                        {{ error }}
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-1.5">
-                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                        Dirección legal de la sede central
-                    </label>
-
-                    <div class="w-full [&>textarea]:w-full [&>textarea]:bg-gray-50/60 [&>textarea]:border [&>textarea]:border-gray-200 [&>textarea]:rounded-xl [&>textarea]:px-4 [&>textarea]:py-2.5 [&>textarea]:outline-none [&>textarea]:focus:bg-white [&>textarea]:focus:border-gray-950 [&>textarea]:transition-all [&>textarea]:text-xs [&>textarea]:font-mono [&>textarea]:shadow-sm [&>textarea]:resize-none">
-                        {{ form.direccion_oficial }}
+                    <div class="rounded-xl border border-dashed border-gray-200 bg-white p-4 text-xs font-bold normal-case text-gray-400 leading-relaxed">
+                        El representante legal y otros parámetros oficiales adicionales se incorporarán a esta pestaña cuando el modelo institucional los defina.
                     </div>
 
-                    {% if form.direccion_oficial.errors %}
-                        {% for error in form.direccion_oficial.errors %}
-                            <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
-                                {{ error }}
-                            </p>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="border border-dashed border-gray-200 rounded-xl md:rounded-2xl p-4 md:p-5 bg-gray-50/50 space-y-3">
-                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
-                        Escudo / logotipo oficial
-                    </label>
-
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        {% if config.logo_light %}
-                            <div class="w-16 h-16 bg-white border border-gray-200 rounded-xl p-2 flex items-center justify-center shadow-sm shrink-0 select-none mx-auto sm:mx-0">
-                                <img
-                                    src="{{ config.logo_light.url }}"
-                                    alt="Escudo Actual"
-                                    class="max-h-full object-contain"
-                                >
-                            </div>
-                        {% else %}
-                            <div class="w-16 h-16 border-2 border-dashed border-gray-200 bg-white rounded-xl flex items-center justify-center text-xl text-gray-300 shrink-0 select-none mx-auto sm:mx-0">
-                                🏛️
-                            </div>
-                        {% endif %}
-
-                        <div class="flex-1 w-full text-xs normal-case font-sans text-gray-500">
-                            <div class="font-mono text-xs md:text-xs text-gray-700 uppercase tracking-wide overflow-x-hidden max-w-full [&>input]:max-w-full [&>input]:text-xs [&>input]:cursor-pointer">
-                                {{ form.logo_light }}
-                            </div>
-
-                            {% if form.logo_light.errors %}
-                                {% for error in form.logo_light.errors %}
-                                    <p class="text-xs uppercase text-red-700 font-bold mt-1">
-                                        {{ error }}
-                                    </p>
-                                {% endfor %}
-                            {% else %}
-                                <p class="text-xs md:text-xs text-gray-400 font-bold mt-2 font-mono uppercase tracking-tight leading-normal">
-                                    // Se sugiere PNG transparente, cuadrado y de alta fidelidad.
-                                </p>
-                            {% endif %}
-                        </div>
-                    </div>
                 </div>
 
                 {% if can_edit_tenant %}
@@ -417,6 +526,11 @@
     </section>
 
 </div>
+
+<style>
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
 
 <script>
     if (typeof lucide !== "undefined") {

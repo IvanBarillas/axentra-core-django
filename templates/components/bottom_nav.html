@@ -173,8 +173,9 @@
                     <span class="text-xs font-bold tracking-wider uppercase text-white/50 group-hover:text-white text-contraste">Acceso</span>
                 </a>
 
-                <a href="https://api.whatsapp.com/send?phone=5219212601146&text=Hola.%20Necesito%20asistencia%20en%20el%20Ecosistema%20Gubernamental%20de%20{{ tenant.app_name|default:'Axentra' }}." 
-                   target="_blank" 
+                {% if tenant.enable_whatsapp_support and tenant.whatsapp_number %}
+                <a href="https://api.whatsapp.com/send?phone={{ tenant.whatsapp_number }}&text=Hola.%20Necesito%20asistencia%20en%20el%20Ecosistema%20Gubernamental%20de%20{{ tenant.app_name|default:'Axentra' }}."
+                   target="_blank"
                    rel="noopener noreferrer"
                    class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none relative"
                    aria-label="Contactar al Asistente por WhatsApp">
@@ -186,6 +187,7 @@
                     </div>
                     <span class="text-xs font-black tracking-wider uppercase text-emerald-400 drop-shadow-[0_0_4px_rgba(52,211,153,0.2)] text-contraste">Soporte IA</span>
                 </a>
+                {% endif %}
             {% endif %}
 
         </div>

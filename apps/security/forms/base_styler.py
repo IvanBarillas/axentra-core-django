@@ -13,6 +13,11 @@ class AxentraFormStylerMixin:
             # Exclusión explícita para subida de archivos (FileInputs)
             if isinstance(field.widget, forms.ClearableFileInput):
                 continue
+
+            # Exclusión explícita para checkboxes/toggles: llevan su propio
+            # estilo de switch, no el de un input de texto.
+            if isinstance(field.widget, forms.CheckboxInput):
+                continue
                 
             # Validar si el campo ya fue marcado externamente como deshabilitado
             if 'class' in field.widget.attrs and AXENTRA_DISABLED_CLASS in field.widget.attrs['class']:
