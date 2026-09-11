@@ -2,7 +2,7 @@
 
 <article
     id="sede-card-{{ sede.id }}"
-    class="group relative bg-white border border-gray-200/80 rounded-[28px] shadow-3xs overflow-hidden hover:border-indigo-200 hover:shadow-sm transition"
+    class="group relative bg-white border border-gray-200/80 rounded-[28px] shadow-3xs overflow-hidden hover:border-brand-accent/30 hover:shadow-sm transition"
 >
 
     <!-- ===================================================== -->
@@ -13,7 +13,7 @@
 
         <div class="flex items-start gap-4">
 
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent shrink-0">
                 <i data-lucide="map-pin" class="w-5 h-5"></i>
             </div>
 
@@ -25,10 +25,10 @@
                     hx-target="#workbench"
                     hx-swap="innerHTML"
                     hx-push-url="true"
-                    class="block text-sm font-black text-indigo-600 hover:text-indigo-800 uppercase font-mono tracking-tight leading-snug truncate"
+                    class="block text-sm font-black text-brand-accent hover:text-brand-accent uppercase font-mono tracking-tight leading-snug truncate"
                 >
                     {{ sede.nombre }}
-                    <i data-lucide="external-link" class="inline-block w-3.5 h-3.5 ml-1 text-indigo-400 group-hover:text-indigo-600 transition"></i>
+                    <i data-lucide="external-link" class="inline-block w-3.5 h-3.5 ml-1 text-brand-accent group-hover:text-brand-accent transition"></i>
                 </a>
 
                 <p class="mt-1 text-xs text-gray-400 font-bold uppercase tracking-widest font-mono leading-relaxed line-clamp-2">
@@ -132,7 +132,7 @@
             hx-target="#workbench"
             hx-swap="innerHTML"
             hx-push-url="true"
-            class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-indigo-700 hover:border-indigo-200 transition font-mono shrink-0"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-brand-accent hover:border-brand-accent/30 transition font-mono shrink-0"
         >
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
             Expediente

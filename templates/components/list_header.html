@@ -16,7 +16,7 @@
 
         {% if action_url or secondary_action_url %}<div class="flex flex-col gap-2 sm:flex-row sm:items-center">
             {% if secondary_action_url %}<a href="{{ secondary_action_url }}" hx-get="{{ secondary_action_url }}" hx-target="{{ secondary_target|default:'#workbench' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-black uppercase tracking-widest text-gray-600 transition hover:border-gray-300 hover:text-gray-950"><i data-lucide="{{ secondary_action_icon|default:'arrow-left' }}" class="h-4 w-4 text-gray-400"></i>{{ secondary_action_label }}</a>{% endif %}
-            {% if action_url %}<a href="{{ action_url }}" hx-get="{{ action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-950 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:bg-gray-900 active:scale-95"><i data-lucide="{{ action_icon|default:'plus' }}" class="h-4 w-4 text-gray-400"></i>{{ action_label }}</a>{% endif %}
+            {% if action_url %}<a href="{{ action_url }}" hx-get="{{ action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-primary px-4 py-2.5 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:brightness-110 active:scale-95"><i data-lucide="{{ action_icon|default:'plus' }}" class="h-4 w-4 text-white/70"></i>{{ action_label }}</a>{% endif %}
         </div>{% endif %}
     </div>
 </header>

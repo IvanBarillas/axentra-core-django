@@ -25,6 +25,19 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    {# Branding dinámico por tenant. Esta plantilla es standalone (no      #}
+    {# extiende shell/base.html), así que necesita su propio bloque       #}
+    {# @theme. type="text/tailwindcss" y el @import "tailwindcss" propio  #}
+    {# son obligatorios — ver templates/shell/base.html para el porqué.   #}
+    <style type="text/tailwindcss">
+        @import "tailwindcss";
+        @theme {
+            --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
+            --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
+            --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};
+        }
+    </style>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -151,7 +164,7 @@
                                     w-12
                                     h-12
                                     rounded-xl
-                                    bg-gray-950
+                                    bg-brand-primary
                                     text-white
                                     flex
                                     items-center
@@ -405,8 +418,8 @@
                         type="submit"
                         class="
                             w-full
-                            bg-gray-950
-                            hover:bg-gray-900
+                            bg-brand-primary
+                            hover:brightness-110
                             text-white
                             font-bold
                             py-3
@@ -428,7 +441,7 @@
                             font-mono
                         "
                     >
-                        <i data-lucide="key-round" class="w-3.5 h-3.5 text-blue-400"></i>
+                        <i data-lucide="key-round" class="w-3.5 h-3.5 text-white"></i>
                         <span>Validar Identidad Laboral</span>
                     </button>
 

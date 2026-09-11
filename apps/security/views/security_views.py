@@ -1,13 +1,11 @@
 # apps/security/views/security_views.py
 import json
-import uuid
 import logging
-import traceback
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse
 from django.contrib import messages
 from django.urls import reverse
 from django.views.decorators.http import require_POST

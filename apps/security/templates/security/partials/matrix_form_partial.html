@@ -84,7 +84,7 @@
                            value="{{ p.llave }}"
                            {% if p.concedido_total %}checked{% endif %}
                            {% if usuario_enfocado.bloqueo_visual or p.obligatorio_by_role %}disabled{% endif %}
-                           class="w-4 h-4 rounded-sm border-gray-300 text-purple-600 focus:ring-purple-500 shrink-0 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                           class="w-4 h-4 rounded-sm border-gray-300 text-brand-accent focus:ring-brand-accent shrink-0 transition cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
                 </div>
             </div>
             {% endfor %}
@@ -96,8 +96,8 @@
                     Edición no disponible
                 </div>
             {% else %}
-                <button type="submit" class="w-full sm:w-auto bg-gray-950 hover:bg-gray-900 text-white font-mono font-black text-xs uppercase tracking-widest py-3.5 px-8 rounded-xl transition transform active:scale-95 shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-                    <i data-lucide="lock" class="w-3.5 h-3.5 text-gray-400"></i>
+                <button type="submit" class="w-full sm:w-auto bg-brand-primary hover:brightness-110 text-white font-mono font-black text-xs uppercase tracking-widest py-3.5 px-8 rounded-xl transition transform active:scale-95 shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="lock" class="w-3.5 h-3.5 text-white/70"></i>
                     <span>Guardar permisos</span>
                 </button>
             {% endif %}

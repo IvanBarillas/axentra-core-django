@@ -1,7 +1,7 @@
 <nav class="bg-white shadow-2xs border-b border-gray-200/80 sticky top-0 z-40 w-full px-4 sm:px-6 lg:px-8 py-3 select-none">
     <div class="w-full flex justify-between items-center">
         
-        <!-- 🏛️ ISOTIPO Y MARCA DEL TENANT -->
+        <!-- ISOTIPO Y MARCA DEL TENANT -->
         <div class="flex items-center gap-4">
             <a href="{% url 'index_hub' %}" class="text-xl font-bold text-gray-950 flex items-center gap-3 tracking-tight transition-opacity hover:opacity-90">
                 {% if tenant.logo_light %}
@@ -12,12 +12,12 @@
                     </div>
                 {% endif %}
                 <div class="leading-none select-none">
-                    <span class="font-extrabold uppercase tracking-tight text-gray-950">{{ tenant.app_name|default:"Axentra" }}</span><span class="text-indigo-600 font-light font-mono ml-0.5">OS</span>
+                    <span class="font-extrabold uppercase tracking-tight text-gray-950">{{ tenant.app_name|default:"Axentra" }}</span><span class="text-brand-accent font-light font-mono ml-0.5">OS</span>
                 </div>
             </a>
         </div>
 
-        <!-- ⚙️ ACCIONES PERIMETRALES DE SESIÓN -->
+        <!-- ACCIONES PERIMETRALES DE SESIÓN -->
         <div class="flex items-center gap-3 sm:gap-4">
             
             {% if request.user.is_authenticated %}
@@ -41,7 +41,7 @@
                             <span class="block max-w-[170px] truncate text-sm font-black text-gray-800">
                                 {{ operator_identity.name|default:request.user.email }}
                             </span>
-                            <span class="block max-w-[170px] truncate text-xs font-bold uppercase tracking-wide text-indigo-600">
+                            <span class="block max-w-[170px] truncate text-xs font-bold uppercase tracking-wide text-brand-accent">
                                 {{ operator_identity.role|default:"Sesión activa" }}
                             </span>
                         </span>
@@ -80,7 +80,7 @@
                         </dl>
 
                         <a href="{% url 'index_hub' %}"
-                           class="flex items-center gap-2 border-t border-gray-100 px-5 py-3 min-h-11 text-sm font-black text-gray-700 transition hover:bg-gray-50 hover:text-indigo-700">
+                           class="flex items-center gap-2 border-t border-gray-100 px-5 py-3 min-h-11 text-sm font-black text-gray-700 transition hover:bg-gray-50 hover:text-brand-accent">
                             <i data-lucide="grid-2x2" class="h-4 w-4"></i>
                             Aplicaciones
                         </a>
@@ -99,8 +99,8 @@
 
             {% else %}
                 <!-- Acceso alterno (Anónimo) -->
-                <a href="{% url 'accounts:login' %}" 
-                   class="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-blue-600 transition font-mono flex items-center gap-1.5">
+                <a href="{% url 'accounts:login' %}"
+                   class="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-brand-accent transition font-mono flex items-center gap-1.5">
                     <i data-lucide="log-in" class="w-4 h-4"></i> Entrar
                 </a>
             {% endif %}

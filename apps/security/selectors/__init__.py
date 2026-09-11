@@ -16,8 +16,7 @@ from .accounts_selectors import (
 
 # 🛡️ PILAR 3: CIBERSEGURIDAD CENTRAL Y MATRIZ (SECURITY)
 from .security_selectors import (
-    SecurityDashboardSelectors, 
-    TenantConfigSelectors
+    SecurityDashboardSelectors,
 )
 
 from .permission_selectors import (
@@ -38,8 +37,7 @@ __all__ = [
     'FuncionarioSelectors',
     
     # Dominios de Security
-    'SecurityDashboardSelectors', 
-    'TenantConfigSelectors',
-    
+    'SecurityDashboardSelectors',
+
     'PermissionSelectors',
 ]

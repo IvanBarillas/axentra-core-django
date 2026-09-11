@@ -28,7 +28,7 @@
                     <option value="{{ value }}" {% if launcher_state == value %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
-            <button class="rounded-xl bg-indigo-600 min-h-11 px-5 py-2.5 text-base font-black text-white hover:bg-indigo-700">Buscar</button>
+            <button class="rounded-xl bg-brand-primary hover:brightness-110 min-h-11 px-5 py-2.5 text-base font-black text-white">Buscar</button>
         </form>
     </section>
 
@@ -51,7 +51,7 @@
                     {% elif not card.enabled %}<span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black uppercase text-slate-500">Desactivada</span>
                     {% elif card.health != 'HEALTHY' %}<span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black uppercase text-amber-700">Atención</span>
                     {% endif %}
-                    {% if card.can_open %}<a href="{{ card.url }}" class="rounded-xl bg-slate-950 min-h-11 px-4 py-2.5 text-sm font-black text-white hover:bg-indigo-700">Abrir</a>{% endif %}
+                    {% if card.can_open %}<a href="{{ card.url }}" class="rounded-xl bg-brand-primary hover:brightness-110 min-h-11 px-4 py-2.5 text-sm font-black text-white">Abrir</a>{% endif %}
                     {% if card.can_toggle %}<form method="post" action="{% url 'module_toggle' card.code %}">{% csrf_token %}<input type="hidden" name="enabled" value="{% if card.enabled %}0{% else %}1{% endif %}"><button class="rounded-xl border border-slate-200 min-h-11 px-3 py-2.5 text-sm font-black text-slate-600">{% if card.enabled %}Desactivar{% else %}Activar{% endif %}</button></form>{% endif %}
                 </div>
             </article>

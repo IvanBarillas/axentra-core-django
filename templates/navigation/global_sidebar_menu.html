@@ -1,7 +1,7 @@
 {# templates/navigation/global_sidebar_menu.html #}
 
 <nav id="global-sidebar-menu"
-     class="h-full overflow-y-auto px-5 py-4 space-y-2 font-mono text-left scrollbar-thin scrollbar-thumb-slate-800"
+     class="h-full overflow-y-auto px-5 py-4 space-y-2 font-mono text-left scrollbar-thin scrollbar-thumb-white/20"
      x-data="{ openMenu: '{{ modulo_actual|default:"admin" }}' }">
 
     {# ADMINISTRACIÓN #}
@@ -11,7 +11,7 @@
 
             <div x-show="openMenu === 'admin'"
                  x-cloak
-                 class="ml-4 pl-3 border-l border-slate-800 space-y-1">
+                 class="ml-4 pl-3 border-l border-white/10 space-y-1">
 
                 {% if is_global_admin or 'organigrama' in allowed_modules %}
                     {% url 'organigrama:estructura_list' as organigrama_url %}
@@ -39,7 +39,7 @@
             <div
                 x-show="openMenu === 'config'"
                 x-cloak
-                class="ml-4 pl-3 border-l border-slate-800 space-y-1"
+                class="ml-4 pl-3 border-l border-white/10 space-y-1"
             >
                 {% url 'security:tenant_config' as tenant_config_url %}
                 {% include "navigation/module_item.html" with title="Identidad Institucional" icon="landmark" href=tenant_config_url hx_target="#workbench" hx_swap="innerHTML" hx_push_url="true" %}

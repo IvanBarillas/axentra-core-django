@@ -1,5 +1,4 @@
 # apps/security/utils/hierarchy_enforcer.py
-from django.shortcuts import get_object_or_404
 from apps.security.models import UserAppRole
 
 class HierarchyEnforcer:

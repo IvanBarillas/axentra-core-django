@@ -13,7 +13,7 @@
             </div>
             <div class="min-w-0">
                 <div class="flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-md border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-indigo-700">Accounts</span>
+                    <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent">Accounts</span>
                     <span class="inline-flex items-center rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-slate-600">Ficha de Identidad</span>
                 </div>
                 <h1 class="mt-2 text-xl font-black text-gray-950 uppercase tracking-tight leading-none">{{ funcionario.full_name|default:funcionario.email|upper }}</h1>
@@ -29,8 +29,8 @@
                 </a>
             {% endif %}
             {% if request.axentra_is_root or "can_change_password" in request.axentra_permissions_list %}
-                <a href="{{ password_url }}" hx-get="{{ password_url }}" hx-target="#page-content" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-950 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-sm transition-all hover:bg-gray-900 active:scale-95">
-                    <i data-lucide="key-round" class="h-4 w-4 text-gray-400"></i>
+                <a href="{{ password_url }}" hx-get="{{ password_url }}" hx-target="#page-content" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-primary px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-sm transition-all hover:brightness-110 active:scale-95">
+                    <i data-lucide="key-round" class="h-4 w-4 text-white/70"></i>
                     <span>Contraseña</span>
                 </a>
             {% endif %}
@@ -56,7 +56,7 @@
                     {% if funcionario.is_superuser %}
                         <span class="rounded-md border border-red-100 bg-red-50 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-red-700">Root</span>
                     {% elif funcionario.is_manager %}
-                        <span class="rounded-md border border-purple-100 bg-purple-50 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-purple-700">Administrador</span>
+                        <span class="rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-brand-accent">Administrador</span>
                     {% else %}
                         <span class="rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-slate-600">Usuario</span>
                     {% endif %}

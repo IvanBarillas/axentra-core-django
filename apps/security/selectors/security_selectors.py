@@ -1,19 +1,13 @@
 # apps/security/selectors/security_selectors.py
-import importlib
-import uuid
 import logging
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
-from typing import List, Optional
 from django.db.models import Q
 from datetime import timedelta
 
 from apps.security.models.organigrama import AppDependencyCapability, Dependencia
 from apps.shared.apps_config import AppIdentifier
-from apps.security.models import SecurityAuditLog, UserAppRole, TenantConfig, AppModule
-from apps.security.dtos import RoleReadOnlyDTO, TenantConfigReadOnlyDTO
-from apps.security.services.permission_loader import get_app_permissions
+from apps.security.models import SecurityAuditLog, UserAppRole, AppModule
 from apps.shared.manifest_registry import AxentraOSRegistry
 
 User = get_user_model()
@@ -112,17 +106,6 @@ class SecurityDashboardSelectors:
         ]
     
 
-class TenantConfigSelectors:
-    """Extractor inmutable del Singleton institucional de marca."""
-
-    @staticmethod
-    def obtener_configuracion_activa() -> Optional[TenantConfigReadOnlyDTO]:
-        config = TenantConfig.objects.first()
-        if not config:
-            return None
-        return TenantConfigReadOnlyDTO.model_validate(config)
-    
-    
 class CapabilitySelectors:
     @classmethod
     def obtener_labels_manifiesto(cls, app_slug: str) -> dict:

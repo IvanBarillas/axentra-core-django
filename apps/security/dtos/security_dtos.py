@@ -27,34 +27,3 @@ class RoleReadOnlyDTO(BaseModel):
         return value if value is not None else []
 
 
-class RoleInputDTO(BaseModel):
-    """CONTRATO DE VALIDACIÓN (POST - MUTACIÓN): Altas y Overrides de privilegios."""
-    user_id: uuid.UUID
-    app_id: int
-    role: str = Field(..., max_length=20)
-    permissions_list: List[str] = Field(default_factory=list)
-
-
-class TenantConfigReadOnlyDTO(BaseModel):
-    """CONTRATO GLOBAL INYECTABLE: Mapea los activos de marca del Ayuntamiento."""
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    app_name: str
-    entidad_nombre: str
-    siglas: str
-    direccion_oficial: Optional[str] = ""
-    rfc: Optional[str] = ""
-    primary_color_class: str
-    logo_light: Optional[str] = None
-    logo_dark: Optional[str] = None
-
-    @field_validator('logo_light', 'logo_dark', mode='before')
-    @classmethod
-    def extraer_url_de_imagen_django(cls, value):
-        if value and hasattr(value, 'url'):
-            try:
-                return value.url
-            except ValueError:
-                return None
-        return None

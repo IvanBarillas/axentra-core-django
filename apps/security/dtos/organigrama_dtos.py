@@ -15,14 +15,6 @@ class SedeReadOnlyDTO(BaseModel):
     encargado_sede_name: str = "Sin Líder Asignado"
     is_active: bool
 
-class SedeInputDTO(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True) # 🟢 Permite objetos nativos de Django
-    nombre: str = Field(..., min_length=3, max_length=150)
-    direccion: Optional[str] = Field("", max_length=255)
-    # 🟢 Polimorfismo de entrada para tolerar UUIDs o instancias de User de Django Forms
-    encargado_sede_id: Optional[Any] = Field(None)
-    is_active: Optional[bool] = Field(True)
-
 # =========================================================================
 # 🏛️ DOMINIO: DEPENDENCIAS (DIRECCIONES CORE)
 # =========================================================================
@@ -125,10 +117,3 @@ class CapabilityReadOnlyDTO(BaseModel):
     flag_beta: bool
     custom_settings: Dict[str, Any] = Field(default_factory=dict)
 
-class CapabilityInputDTO(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    app_id: int
-    dependencia_id: Optional[Any] = Field(...)
-    flag_alfa: bool = False
-    flag_beta: bool = False
-    custom_settings: Dict[str, Any] = Field(default_factory=dict)

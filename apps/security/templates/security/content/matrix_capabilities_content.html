@@ -15,11 +15,11 @@
 
                 <div class="min-w-0">
                     <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center rounded-md border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-indigo-700 font-mono">
+                        <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent font-mono">
                             Security Core
                         </span>
 
-                        <span class="inline-flex items-center rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-blue-700 font-mono">
+                        <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent font-mono">
                             Capacidades
                         </span>
                     </div>
@@ -39,9 +39,9 @@
                 <button
                     type="button"
                     onclick="document.getElementById('addNodeModal').classList.remove('hidden')"
-                    class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gray-950 hover:bg-gray-900 text-white font-black px-5 py-3 rounded-xl text-xs font-mono uppercase tracking-widest transition shadow-sm transform active:scale-95 cursor-pointer"
+                    class="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-primary hover:brightness-110 text-white font-black px-5 py-3 rounded-xl text-xs font-mono uppercase tracking-widest transition shadow-sm transform active:scale-95 cursor-pointer"
                 >
-                    <i data-lucide="plus-circle" class="w-4 h-4 text-gray-400"></i>
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-white/70"></i>
                     <span>Vincular Dependencia</span>
                 </button>
 
@@ -90,14 +90,14 @@
     </section>
 
     <section class="bg-white p-4 md:p-5 border border-gray-200/80 rounded-2xl shadow-sm flex items-start gap-3.5 text-left">
-        <div class="p-2 bg-blue-50 border border-blue-100 rounded-xl shrink-0 flex items-center justify-center">
-            <i data-lucide="satellite" class="w-4 h-4 text-blue-600"></i>
+        <div class="p-2 bg-brand-accent/10 border border-brand-accent/20 rounded-xl shrink-0 flex items-center justify-center">
+            <i data-lucide="satellite" class="w-4 h-4 text-brand-accent"></i>
         </div>
 
         <div class="font-mono text-xs pt-0.5">
             <h3 class="font-black text-gray-950 uppercase tracking-widest leading-none">
                 Aplicación seleccionada:
-                <span class="text-blue-600 font-bold">
+                <span class="text-brand-accent font-bold">
                     {{ app_activa.name|upper }}
                 </span>
             </h3>
@@ -117,11 +117,11 @@
                             Dependencia
                         </th>
 
-                        <th class="py-4 px-6 text-blue-600">
+                        <th class="py-4 px-6 text-brand-accent">
                             {{ labels.can_operate.label|upper }}
                         </th>
 
-                        <th class="py-4 px-6 text-indigo-600">
+                        <th class="py-4 px-6 text-brand-accent">
                             {{ labels.can_supervise.label|upper }}
                         </th>
 
@@ -149,7 +149,7 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="field" value="can_operate">
 
-                                    {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_operate" field_value=cap.can_operate color_on="bg-blue-600" %}
+                                    {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_operate" field_value=cap.can_operate color_on="bg-brand-accent" %}
                                 </form>
                             </td>
 
@@ -158,7 +158,7 @@
                                     {% csrf_token %}
                                     <input type="hidden" name="field" value="can_supervise">
 
-                                    {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_supervise" field_value=cap.can_supervise color_on="bg-indigo-600" %}
+                                    {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_supervise" field_value=cap.can_supervise color_on="bg-brand-accent" %}
                                 </form>
                             </td>
 
@@ -200,7 +200,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-0.5">
 
                     <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-100 flex flex-col justify-between items-start h-[75px] text-left">
-                        <span class="text-xs font-black text-blue-600 uppercase tracking-wider truncate max-w-full">
+                        <span class="text-xs font-black text-brand-accent uppercase tracking-wider truncate max-w-full">
                             {{ labels.can_operate.label|upper }}
                         </span>
 
@@ -209,12 +209,12 @@
                             <input type="hidden" name="field" value="can_operate">
                             <input type="hidden" name="mobile" value="1">
 
-                            {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_operate" field_value=cap.can_operate color_on="bg-blue-600" mobile=True %}
+                            {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_operate" field_value=cap.can_operate color_on="bg-brand-accent" mobile=True %}
                         </form>
                     </div>
 
                     <div class="bg-gray-50/60 p-3 rounded-xl border border-gray-100 flex flex-col justify-between items-start h-[75px] text-left">
-                        <span class="text-xs font-black text-indigo-600 uppercase tracking-wider truncate max-w-full">
+                        <span class="text-xs font-black text-brand-accent uppercase tracking-wider truncate max-w-full">
                             {{ labels.can_supervise.label|upper }}
                         </span>
 
@@ -223,7 +223,7 @@
                             <input type="hidden" name="field" value="can_supervise">
                             <input type="hidden" name="mobile" value="1">
 
-                            {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_supervise" field_value=cap.can_supervise color_on="bg-indigo-600" mobile=True %}
+                            {% include "security/partials/capability_toggle.html" with cap=cap app_activa=app_activa field_name="can_supervise" field_value=cap.can_supervise color_on="bg-brand-accent" mobile=True %}
                         </form>
                     </div>
 
@@ -321,7 +321,7 @@
 
                 <button
                     type="submit"
-                    class="w-full sm:w-auto bg-gray-950 hover:bg-gray-900 text-white font-black px-6 py-3 rounded-xl transition shadow-sm cursor-pointer transform active:scale-95 text-center"
+                    class="w-full sm:w-auto bg-brand-primary hover:brightness-110 text-white font-black px-6 py-3 rounded-xl transition shadow-sm cursor-pointer transform active:scale-95 text-center"
                 >
                     Agregar dependencia
                 </button>

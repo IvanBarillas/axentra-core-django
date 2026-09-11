@@ -10,19 +10,16 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.forms import SetPasswordForm
 
-from apps.security.models.audit import SecurityAuditLog
 from apps.security.permissions import AccountsPermissions
-from apps.security.utils.forensic_auditor import ForensicAuditor
 from apps.shared.apps_config import AppIdentifier
 from apps.security.decorators import axentra_module_gate
-from apps.security.models import User, UserProfile
-from apps.security.models.organigrama import Dependencia, AreaOperativa, Sede
+from apps.security.models import UserProfile
+from apps.security.models.organigrama import Dependencia, Sede
 from apps.security.selectors.accounts_selectors import AccountsDashboardSelectors, FuncionarioSelectors
 from apps.security.services.accounts_services import FuncionarioService
 from apps.security.forms import (
     StaffUserCreationForm, StaffUserProfileForm,
-    StaffUserChangeForm, StaffUserProfileChangeForm,
-    AdminPasswordChangeForm
+    StaffUserChangeForm, StaffUserProfileChangeForm
 )
 
 from apps.shared.utils.telemetry import AxentraRadar

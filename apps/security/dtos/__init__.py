@@ -1,19 +1,19 @@
 # apps/security/dtos/__init__.py
 
-from .security_dtos import RoleReadOnlyDTO, RoleInputDTO, TenantConfigReadOnlyDTO
+from .security_dtos import RoleReadOnlyDTO
 from .accounts_dtos import FuncionarioReadOnlyDTO, CrearFuncionarioInputDTO, EditarFuncionarioInputDTO
 from .organigrama_dtos import (
-    SedeReadOnlyDTO, SedeInputDTO,
+    SedeReadOnlyDTO,
     DependenciaReadOnlyDTO, DependenciaInputDTO,
     AreaOperativaReadOnlyDTO, AreaOperativaInputDTO,
-    CapabilityReadOnlyDTO, CapabilityInputDTO
+    CapabilityReadOnlyDTO
 )
 
 __all__ = [
-    'RoleReadOnlyDTO', 'RoleInputDTO', 'TenantConfigReadOnlyDTO',
+    'RoleReadOnlyDTO',
     'FuncionarioReadOnlyDTO', 'CrearFuncionarioInputDTO', 'EditarFuncionarioInputDTO',
-    'SedeReadOnlyDTO', 'SedeInputDTO',
+    'SedeReadOnlyDTO',
     'DependenciaReadOnlyDTO', 'DependenciaInputDTO',
     'AreaOperativaReadOnlyDTO', 'AreaOperativaInputDTO',
-    'CapabilityReadOnlyDTO', 'CapabilityInputDTO'
+    'CapabilityReadOnlyDTO'
 ]

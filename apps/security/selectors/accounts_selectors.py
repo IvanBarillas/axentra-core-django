@@ -2,7 +2,6 @@
 import datetime
 import uuid
 from typing import List, Dict, Any
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.db import models as db_models
 

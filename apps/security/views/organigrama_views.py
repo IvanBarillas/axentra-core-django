@@ -6,7 +6,6 @@ from django.db.models import Q, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.db import transaction
@@ -17,7 +16,7 @@ from apps.shared.apps_config import AppIdentifier
 from apps.security.decorators import axentra_module_gate
 from apps.security.models.organigrama import Sede, Dependencia, AreaOperativa
 from apps.security.models.audit import SecurityAuditLog
-from apps.security.selectors.organigrama_selectors import SedeSelectors, DependenciaSelectors, AreaOperativaSelectors
+from apps.security.selectors.organigrama_selectors import SedeSelectors
 from apps.security.services.organigrama_services import OrganigramaService
 from apps.security.forms import SedeForm, DependenciaForm, AreaOperativaForm
 from apps.security.utils.forensic_auditor import ForensicAuditor
@@ -1050,7 +1049,6 @@ def dependencia_create_view(request):
 def dependencia_update_view(request, pk: uuid.UUID):
     """Modificación contextual de nomenclatura, jerarquía y titular de dependencia."""
     is_htmx = str(request.headers.get("HX-Request", "")).strip().lower() == "true"
-    target_htmx = request.headers.get("HX-Target", "")
 
     dep_instancia = get_object_or_404(Dependencia.objects.select_related("parent"), pk=pk, is_deleted=False)
 

@@ -1,0 +1,60 @@
+{# ========================================================== #}
+{# APP BOTTOM NAVIGATION · Navegación táctil del shell autenticado #}
+{# Solo visible en md:hidden; el sidebar lateral cubre >= md.   #}
+{# No confundir con components/bottom_nav.html (portada pública). #}
+{# ========================================================== #}
+{% url 'index_hub' as hub_url %}
+{% url 'security:control_panel' as control_panel_url %}
+
+<nav
+    class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200/80 md:hidden pb-[env(safe-area-inset-bottom)]"
+    aria-label="Navegación móvil"
+>
+    <div class="grid grid-cols-4">
+
+        <a href="{{ hub_url }}"
+           hx-get="{{ hub_url }}"
+           hx-target="#workbench"
+           hx-swap="innerHTML"
+           hx-push-url="true"
+           class="flex flex-col items-center justify-center gap-1 py-2.5 min-h-14 text-xs font-bold uppercase tracking-wide transition
+                  {% if request.resolver_match.view_name == 'index_hub' %}text-brand-accent{% else %}text-gray-400 hover:text-gray-700{% endif %}"
+        >
+            <i data-lucide="home" class="w-5 h-5"></i>
+            <span>Inicio</span>
+        </a>
+
+        <a href="{{ hub_url }}"
+           hx-get="{{ hub_url }}"
+           hx-target="#workbench"
+           hx-swap="innerHTML"
+           hx-push-url="true"
+           class="flex flex-col items-center justify-center gap-1 py-2.5 min-h-14 text-xs font-bold uppercase tracking-wide text-gray-400 hover:text-gray-700 transition"
+        >
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span>Módulos</span>
+        </a>
+
+        <a href="{{ control_panel_url }}"
+           hx-get="{{ control_panel_url }}"
+           hx-target="#workbench"
+           hx-swap="innerHTML"
+           hx-push-url="true"
+           class="flex flex-col items-center justify-center gap-1 py-2.5 min-h-14 text-xs font-bold uppercase tracking-wide transition
+                  {% if request.resolver_match.view_name == 'security:control_panel' %}text-brand-accent{% else %}text-gray-400 hover:text-gray-700{% endif %}"
+        >
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <span>Panel</span>
+        </a>
+
+        <span
+            class="flex flex-col items-center justify-center gap-1 py-2.5 min-h-14 text-xs font-bold uppercase tracking-wide text-gray-300 cursor-not-allowed select-none"
+            aria-disabled="true"
+            title="Perfil de usuario: disponible próximamente"
+        >
+            <i data-lucide="user" class="w-5 h-5"></i>
+            <span>Perfil</span>
+        </span>
+
+    </div>
+</nav>

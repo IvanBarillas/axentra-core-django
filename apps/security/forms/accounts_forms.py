@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField  
 from apps.security.forms.base_styler import AxentraFormStylerMixin
-from apps.security.models import User, UserProfile, AreaOperativa
+from apps.security.models import UserProfile, AreaOperativa
 
 User = get_user_model()
 

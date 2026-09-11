@@ -13,7 +13,7 @@
     <div class="bg-white p-5 md:p-8 rounded-2xl md:rounded-[32px] border border-gray-200/80 shadow-3xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 relative overflow-hidden">
         <div class="min-w-0 flex-1 w-full text-left">
             <div class="text-xs font-bold text-gray-400 font-mono uppercase tracking-[0.2em] mb-1 flex items-center gap-1.5 leading-none">
-                <span class="w-1.5 h-1.5 {% if action == 'update' %}bg-blue-500{% else %}bg-emerald-500{% endif %} rounded-full shrink-0"></span>
+                <span class="w-1.5 h-1.5 {% if action == 'update' %}bg-brand-accent/100{% else %}bg-emerald-500{% endif %} rounded-full shrink-0"></span>
                 <span>Infraestructura Inmobiliaria // Gobernanza Territorial</span>
             </div>
             <h2 class="text-xl md:text-2xl font-black text-gray-950 tracking-tighter uppercase font-mono truncate">
@@ -118,8 +118,8 @@
 >
     Cancelar Operación
 </a>
-            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gray-950 hover:bg-gray-900 text-white font-black py-3 px-6 rounded-xl uppercase tracking-widest transition transform active:scale-95 cursor-pointer shadow-sm">
-                <i data-lucide="database" class="w-3.5 h-3.5 text-gray-400"></i>
+            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-primary hover:brightness-110 text-white font-black py-3 px-6 rounded-xl uppercase tracking-widest transition transform active:scale-95 cursor-pointer shadow-sm">
+                <i data-lucide="database" class="w-3.5 h-3.5 text-white/70"></i>
                 <span>{% if action == "update" %}Actualizar Sede{% else %}Guardar Sede{% endif %}</span>
             </button>
         </div>

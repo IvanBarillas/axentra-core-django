@@ -9,9 +9,53 @@
 
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
+    {# ========================================================== #}
+    {# BRANDING DINÁMICO Y TIPOGRAFÍA/ESPACIADO FLUIDO             #}
+    {# Variables de marca por tenant + escalas responsivas sin JS. #}
+    {# ========================================================== #}
     <style>
+        /* Tipografía y espaciado fluido (independientes de Tailwind @theme:
+           no reemplazan la escala de tamaños nativa de Tailwind). */
+        :root {
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+            --font-size-lg: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
+            --font-size-xl: clamp(1.56rem, 1vw + 1.31rem, 2.11rem);
+            --space-responsive: clamp(1rem, 2vw + 0.5rem, 2.5rem);
+        }
+
+        .text-fluid-base { font-size: var(--font-size-base); }
+        .text-fluid-lg { font-size: var(--font-size-lg); }
+        .text-fluid-xl { font-size: var(--font-size-xl); }
+        .p-fluid { padding: var(--space-responsive); }
+    </style>
+
+    {# ========================================================== #}
+    {# BRANDING DINÁMICO POR TENANT                                #}
+    {# Los colores viven en @theme (no en :root a mano) para que   #}
+    {# Tailwind genere bg-/text-/border-/hover:/focus: automático  #}
+    {# a partir de --color-brand-*, igual que cualquier color base.#}
+    {#                                                             #}
+    {# type="text/tailwindcss" es OBLIGATORIO: @tailwindcss/browser#}
+    {# solo procesa @theme dentro de un <style> con este tipo. Un  #}
+    {# <style> normal deja que el navegador parsee @theme como CSS #}
+    {# estándar, donde no es una at-rule válida, y la descarta.    #}
+    {#                                                             #}
+    {# @import "tailwindcss" explícito es igual de obligatorio:    #}
+    {# el motor concatena todos los <style type="text/tailwindcss">#}
+    {# del documento y, si el resultado YA contiene la palabra     #}
+    {# "@import" (aunque sea el de Google Fonts), asume que ya     #}
+    {# declaraste tus imports y NO inyecta "@import tailwindcss"   #}
+    {# automáticamente — rompiendo TODAS las utilidades del sitio. #}
+    {# ========================================================== #}
+    <style type="text/tailwindcss">
+        @import "tailwindcss";
         @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
         @theme {
+            --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
+            --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
+            --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};
+
             --ax-primary: #0a192f;
             --ax-secondary: #1e3a8a;
             --ax-accent: #2563eb;
@@ -24,21 +68,23 @@
 
         /* Estado visual del sidebar contextual sincronizado por HTMX. */
         #module-sidebar a[data-axentra-sidebar-current="true"] {
-            background-color: #0f172a !important;
+            background-color: rgb(255 255 255 / 0.15) !important;
+            border-left: 4px solid var(--color-brand-accent) !important;
             color: #ffffff !important;
-            box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.16) !important;
+            box-shadow: none !important;
         }
         #module-sidebar a[data-axentra-sidebar-current="true"] i {
             color: inherit !important;
         }
         #module-sidebar a[data-axentra-sidebar-current="false"] {
             background-color: transparent !important;
-            color: #475569 !important;
+            border-left: 4px solid transparent !important;
+            color: rgb(255 255 255 / 0.7) !important;
             box-shadow: none !important;
         }
         #module-sidebar a[data-axentra-sidebar-current="false"]:hover {
-            background-color: #f1f5f9 !important;
-            color: #0f172a !important;
+            background-color: rgb(255 255 255 / 0.1) !important;
+            color: #ffffff !important;
         }
         .animate-fade-in { animation: fadeIn .25s ease; }
         @keyframes fadeIn {
@@ -60,11 +106,13 @@
         <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
             {% include "partials/navbar.html" %}
 
-            <main id="workbench" class="flex-1 overflow-hidden">
+            <main id="workbench" class="flex-1 overflow-hidden pb-16 md:pb-0">
                 {% block workbench %}{% endblock %}
             </main>
         </div>
     </div>
+
+    {% include "components/app_bottom_nav.html" %}
 
     <div id="modal-root"></div>
     <div id="drawer-root"></div>
@@ -127,7 +175,7 @@
                 confirmIcon: "shield-alert",
                 confirmIconBg: "bg-amber-50",
                 confirmIconColor: "text-amber-700",
-                confirmButtonClass: "bg-gray-950 hover:bg-gray-900 text-white",
+                confirmButtonClass: "bg-brand-primary hover:brightness-90 text-white",
                 confirmActionText: "Confirmar",
                 confirmCancelText: "Cancelar",
                 pendingConfirmRequest: null,
@@ -138,7 +186,7 @@
                     this.confirmIcon = payload.icon || "shield-alert";
                     this.confirmIconBg = payload.iconBg || "bg-amber-50";
                     this.confirmIconColor = payload.iconColor || "text-amber-700";
-                    this.confirmButtonClass = payload.buttonClass || "bg-gray-950 hover:bg-gray-900 text-white";
+                    this.confirmButtonClass = payload.buttonClass || "bg-brand-primary hover:brightness-90 text-white";
                     this.confirmActionText = payload.actionText || "Confirmar";
                     this.confirmCancelText = payload.cancelText || "Cancelar";
                     this.pendingConfirmRequest = payload.issueRequest || null;
@@ -178,7 +226,7 @@
                     icon: element.getAttribute("data-confirm-icon") || "shield-alert",
                     iconBg: element.getAttribute("data-confirm-icon-bg") || "bg-amber-50",
                     iconColor: element.getAttribute("data-confirm-icon-color") || "text-amber-700",
-                    buttonClass: element.getAttribute("data-confirm-button-class") || "bg-gray-950 hover:bg-gray-900 text-white",
+                    buttonClass: element.getAttribute("data-confirm-button-class") || "bg-brand-primary hover:brightness-90 text-white",
                     actionText: element.getAttribute("data-confirm-action") || "Confirmar",
                     cancelText: element.getAttribute("data-confirm-cancel") || "Cancelar",
                     issueRequest: event.detail.issueRequest

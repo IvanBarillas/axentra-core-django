@@ -1,9 +1,15 @@
 # apps/security/models/infrastructure.py
 
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
 
 from apps.shared.models import AxentraBaseModel
+
+hex_color_validator = RegexValidator(
+    regex=r"^#[0-9A-Fa-f]{6}$",
+    message="El color debe ser un valor hexadecimal válido, por ejemplo #6B1D2F.",
+)
 
 
 class AppModule(AxentraBaseModel):
@@ -238,6 +244,30 @@ class TenantConfig(AxentraBaseModel):
         max_length=30,
         default="slate-950",
         help_text="Clase nativa de Tailwind para branding.",
+    )
+
+    primary_color = models.CharField(
+        "Color Primario (HEX)",
+        max_length=7,
+        default="#6B1D2F",
+        validators=[hex_color_validator],
+        help_text="Color primario de marca institucional en formato hexadecimal, ej. #6B1D2F.",
+    )
+
+    secondary_color = models.CharField(
+        "Color Secundario (HEX)",
+        max_length=7,
+        default="#4A5568",
+        validators=[hex_color_validator],
+        help_text="Color secundario de marca institucional en formato hexadecimal, ej. #4A5568.",
+    )
+
+    accent_color = models.CharField(
+        "Color de Acento (HEX)",
+        max_length=7,
+        default="#059669",
+        validators=[hex_color_validator],
+        help_text="Color de acento de marca institucional en formato hexadecimal, ej. #059669.",
     )
 
     class Meta:

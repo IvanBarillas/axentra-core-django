@@ -9,8 +9,7 @@ from apps.security.models import Sede, Dependencia, AreaOperativa, AppDependency
 from apps.security.dtos import (
     SedeReadOnlyDTO, 
     DependenciaReadOnlyDTO, 
-    AreaOperativaReadOnlyDTO,
-    CapabilityReadOnlyDTO
+    AreaOperativaReadOnlyDTO
 )
 
 User = get_user_model()

@@ -5,7 +5,6 @@ import logging
 from django.core.exceptions import ObjectDoesNotExist
 
 from apps.security.models import TenantConfig, UserAppRole
-from apps.shared.apps_config import AppIdentifier
 from apps.shared.manifest_registry import AxentraOSRegistry
 from apps.security.services.permission_loader import get_user_permissions_for_app
 from apps.shared.utils.telemetry import AxentraRadar

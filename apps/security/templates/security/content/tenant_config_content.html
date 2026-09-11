@@ -18,7 +18,7 @@
                             Configuración
                         </span>
 
-                        <span class="inline-flex items-center rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-blue-700 font-mono">
+                        <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent font-mono">
                             Identidad Institucional
                         </span>
                     </div>
@@ -92,7 +92,7 @@
                 {% csrf_token %}
 
                 {% if not can_edit_tenant %}
-                    <div class="rounded-xl border border-blue-200 bg-blue-50 p-4 text-xs font-bold normal-case tracking-normal text-blue-900">
+                    <div class="rounded-xl border border-brand-accent/30 bg-brand-accent/10 p-4 text-xs font-bold normal-case tracking-normal text-brand-accent">
                         Consulta de solo lectura. Su rol no permite modificar la identidad institucional.
                     </div>
                 {% endif %}
@@ -253,6 +253,83 @@
                     </div>
                 </div>
 
+                <div class="border border-dashed border-gray-200 rounded-xl md:rounded-2xl p-4 md:p-5 bg-gray-50/50 space-y-3">
+                    <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
+                        Paleta institucional (branding dinámico)
+                    </label>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                Color primario
+                            </label>
+
+                            <div class="flex items-center gap-3">
+                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                    {{ form.primary_color }}
+                                </div>
+                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                    {{ form.primary_color.value|default:"#6B1D2F" }}
+                                </span>
+                            </div>
+
+                            {% if form.primary_color.errors %}
+                                {% for error in form.primary_color.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                Color secundario
+                            </label>
+
+                            <div class="flex items-center gap-3">
+                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                    {{ form.secondary_color }}
+                                </div>
+                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                    {{ form.secondary_color.value|default:"#4A5568" }}
+                                </span>
+                            </div>
+
+                            {% if form.secondary_color.errors %}
+                                {% for error in form.secondary_color.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block font-bold text-gray-500 text-xs tracking-wide px-1">
+                                Color de acento
+                            </label>
+
+                            <div class="flex items-center gap-3">
+                                <div class="[&>input]:h-11 [&>input]:w-16 [&>input]:rounded-xl [&>input]:border [&>input]:border-gray-200 [&>input]:cursor-pointer [&>input]:p-1 [&>input]:bg-white [&>input]:shadow-sm [&>input]:outline-none [&>input]:focus:border-gray-950 [&>input]:focus:ring-1 [&>input]:focus:ring-gray-950 [&>input]:transition-all">
+                                    {{ form.accent_color }}
+                                </div>
+                                <span class="font-mono text-xs font-bold uppercase tracking-wide text-gray-500">
+                                    {{ form.accent_color.value|default:"#059669" }}
+                                </span>
+                            </div>
+
+                            {% if form.accent_color.errors %}
+                                {% for error in form.accent_color.errors %}
+                                    <p class="text-xs uppercase text-red-700 font-bold mt-1 px-1">
+                                        {{ error }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="space-y-1.5">
                     <label class="block font-black text-gray-400 text-xs tracking-wider px-1">
                         Dirección legal de la sede central
@@ -326,9 +403,9 @@
 
                     <button
                         type="submit"
-                        class="sm:w-2/3 bg-gray-950 hover:bg-gray-900 text-white font-black py-3.5 px-4 rounded-xl shadow-sm transition transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+                        class="sm:w-2/3 bg-brand-primary hover:brightness-110 text-white font-black py-3.5 px-4 rounded-xl shadow-sm transition transform active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
                     >
-                        <i data-lucide="save" class="w-4 h-4 text-gray-400"></i>
+                        <i data-lucide="save" class="w-4 h-4 text-white/70"></i>
                         <span>Guardar cambios</span>
                     </button>
                 </div>

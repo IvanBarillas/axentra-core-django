@@ -24,6 +24,19 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    {# Branding dinámico por tenant. Esta plantilla es standalone (no      #}
+    {# extiende shell/base.html), así que necesita su propio bloque       #}
+    {# @theme. type="text/tailwindcss" y el @import "tailwindcss" propio  #}
+    {# son obligatorios — ver templates/shell/base.html para el porqué.   #}
+    <style type="text/tailwindcss">
+        @import "tailwindcss";
+        @theme {
+            --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
+            --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
+            --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};
+        }
+    </style>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -117,7 +130,7 @@
 
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-950 tracking-tighter uppercase font-mono leading-none">
                     Ecosistema de
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                    <span class="text-brand-primary">
                         Soluciones
                     </span>
                     Digitales
@@ -187,8 +200,8 @@
                                     items-center
                                     justify-center
                                     gap-2
-                                    bg-blue-600
-                                    hover:bg-blue-700
+                                    bg-brand-primary
+                                    hover:brightness-110
                                     text-white
                                     font-bold
                                     py-3.5

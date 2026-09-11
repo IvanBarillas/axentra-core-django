@@ -1,4 +1,3 @@
-from dataclasses import asdict
 
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
@@ -8,7 +7,7 @@ from django.utils import timezone
 from apps.security.models import AppModule, UserAppRole
 from apps.security.models.audit import SecurityAuditLog
 
-from .contracts import ModuleHealth, ModuleKind, ModuleRuntimeStatus
+from .contracts import ModuleHealth, ModuleRuntimeStatus
 from .catalog import available_module_catalog
 from .registry import module_registry
 

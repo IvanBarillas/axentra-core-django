@@ -5,6 +5,13 @@ from apps.security.forms.base_styler import AxentraFormStylerMixin
 from apps.security.models import TenantConfig
 from apps.security.models.infrastructure import Municipality
 
+
+class ColorInput(forms.TextInput):
+    """Input HTML5 nativo de selección de color (paleta institucional)."""
+
+    input_type = "color"
+
+
 class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
     """Formulario del Singleton de Identidad Corporativa."""
 
@@ -20,6 +27,9 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "rfc",
             "logo_light",
             "primary_color_class",
+            "primary_color",
+            "secondary_color",
+            "accent_color",
         ]
 
         widgets = {
@@ -69,6 +79,9 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
                     )
                 }
             ),
+            "primary_color": ColorInput(),
+            "secondary_color": ColorInput(),
+            "accent_color": ColorInput(),
         }
 
         labels = {
@@ -80,11 +93,17 @@ class TenantConfigForm(AxentraFormStylerMixin, forms.ModelForm):
             "rfc": "Registro Federal de Contribuyentes",
             "logo_light": "Escudo / logotipo oficial",
             "primary_color_class": "Color temático de acento",
+            "primary_color": "Color primario",
+            "secondary_color": "Color secundario",
+            "accent_color": "Color de acento",
         }
 
         help_texts = {
             "municipality": "Municipio oficial asociado a esta instalación. Define el segmento [MUN] de folios patrimoniales. Ejemplo: 039 · COATZACOALCOS.",
             "primary_color_class": "Color institucional usado como acento visual en la plataforma.",
+            "primary_color": "Color primario de marca: chasis global, sidebar y botones principales.",
+            "secondary_color": "Color secundario de apoyo para textos y superficies neutras de marca.",
+            "accent_color": "Color de acento para resaltados, estados activos y detalles interactivos.",
         }
 
     def __init__(self, *args, **kwargs):

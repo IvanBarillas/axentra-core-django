@@ -14,12 +14,12 @@
 
                 <div class="min-w-0">
                     <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center rounded-md border border-indigo-100 bg-indigo-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-indigo-700 font-mono">
+                        <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent font-mono">
                             Seguridad
                         </span>
 
                         {% if app %}
-                            <span class="inline-flex items-center rounded-md border border-blue-100 bg-blue-50 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-blue-700 font-mono">
+                            <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 text-xs font-black uppercase tracking-[0.18em] text-brand-accent font-mono">
                                 {{ app.slug }}
                             </span>
                         {% else %}
@@ -118,7 +118,7 @@
 
                                 <button
                                     type="submit"
-                                    class="bg-gray-950 hover:bg-gray-900 text-white font-mono font-black py-2 px-4 rounded-xl uppercase tracking-widest transition-all transform active:scale-95 cursor-pointer shadow-xs"
+                                    class="bg-brand-primary hover:brightness-110 text-white font-mono font-black py-2 px-4 rounded-xl uppercase tracking-widest transition-all transform active:scale-95 cursor-pointer shadow-xs"
                                 >
                                     Agregar
                                 </button>
@@ -156,8 +156,8 @@
                                 hx-push-url="true"
                                 class="min-w-0 flex-1 group cursor-pointer text-left block space-y-1"
                             >
-                                <span class="flex items-center gap-2 text-xs font-black font-mono text-gray-950 uppercase group-hover:text-blue-600 transition tracking-tight">
-                                    <i data-lucide="user" class="w-3.5 h-3.5 text-gray-400 group-hover:text-blue-500 transition shrink-0"></i>
+                                <span class="flex items-center gap-2 text-xs font-black font-mono text-gray-950 uppercase group-hover:text-brand-accent transition tracking-tight">
+                                    <i data-lucide="user" class="w-3.5 h-3.5 text-gray-400 group-hover:text-brand-accent transition shrink-0"></i>
                                     <span class="truncate">
                                         {{ p.usuario.first_name }} {{ p.usuario.last_name }}
                                     </span>
@@ -252,9 +252,9 @@
                 hx-target="#page-content"
                 hx-swap="innerHTML"
                 hx-push-url="true"
-                class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:bg-slate-900 active:scale-95 font-mono"
+                class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-primary px-5 py-3 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:brightness-110 active:scale-95 font-mono"
             >
-                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-slate-400"></i>
+                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-white/70"></i>
                 Ir al panel
             </a>
         </section>

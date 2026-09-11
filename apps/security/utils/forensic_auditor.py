@@ -1,6 +1,5 @@
 # apps/security/utils/forensic_auditor.py
 import logging
-import traceback
 from apps.security.models.audit import SecurityAuditLog
 
 logger = logging.getLogger(__name__)
