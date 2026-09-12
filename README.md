@@ -34,3 +34,84 @@ _(Este índice se expande conforme el Core Engine distribuye nuevas capacidades 
 
 AXENTRA MÉXICO © 2026  
 _Infraestructura soberana, tecnologías de ciberseguridad avanzada y sistemas de alto rendimiento para la Administración Pública._
+
+## Desarrollo y recursos frontend locales
+
+Requisitos: Python 3.13+, `uv` y Git. Tailwind usa el CLI **standalone oficial
+4.3.3**: no requiere Node.js. Sus ejecutables y SHA256 están fijados en
+`tools/tailwind.lock.json`; se descargan a `.tools/` (no versionado).
+
+```bash
+uv sync --frozen
+# Preparar .env.dev a partir de .env.example y ajustar sus valores.
+uv run python tools/tailwind.py install
+uv run python tools/tailwind.py build
+uv run python manage.py migrate
+uv run python manage.py runserver
+```
+
+En otra terminal, al editar plantillas, clases Python/JavaScript o el tema:
+
+```bash
+uv run python tools/tailwind.py watch
+```
+
+Editar `assets/css/tailwind.css`; **no editar el generado**
+`static/css/tailwind.css`. Se versiona el CSS generado para disponer de estilos
+al clonar y en el bind mount de desarrollo. Regenerarlo antes de entregar cambios.
+El escaneo incluye `templates/`, `apps/` (también formularios y fragmentos HTMX)
+y los scripts propios enumerados con `@source`. Al agregar un script o un
+satélite fuera de esas rutas, registrar su fuente.
+
+Las clases de Alpine/HTMX deben aparecer completas en el código. Los componentes
+que interpolan colores usan la lista explícita `@source inline` del CSS fuente;
+al ampliar su paleta, ampliar esa lista y verificar el CSS resultante. Los colores
+`brand-primary`, `brand-secondary` y `brand-accent` se generan durante el build,
+y cada página define sus valores mediante variables CSS `:root` del tenant.
+Cambiar los colores institucionales no necesita recompilar.
+
+Tailwind Browser/Play CDN y Google Fonts ya no se cargan en el navegador. Lucide,
+HTMX, Alpine, Chart.js, Mermaid y Source Sans 3 se sirven desde `static/`.
+El inventario y las licencias están documentados en `docs/frontend-assets.md`.
+La instalación inicial del compilador requiere Internet; compilar con el CLI ya
+instalado y servir los recursos frontend no lo requieren. Los enlaces de usuario
+como WhatsApp siguen siendo enlaces externos.
+
+## Build y despliegue
+
+El `Dockerfile` instala el CLI verificado, compila CSS y después ejecuta
+`collectstatic`. WhiteNoise usa `STORAGES` de Django 6 para generar nombres con
+hash y archivos comprimidos. `docker-compose.prod.yml` sirve los estáticos de la
+imagen: no monta un volumen persistente sobre `/app/staticfiles`, evitando CSS
+antiguo después de reconstruir. Los volúmenes de base de datos, media y logs se
+mantienen. Un volumen `static_data` de despliegues anteriores queda sin usar; no
+es necesario eliminarlo para desplegar.
+
+```bash
+# Comprobación local sin depender de .env.dev ni tocar la base de datos real:
+DJANGO_ENV=build uv run python manage.py check
+DJANGO_ENV=build uv run python manage.py test apps.shared.tests apps.security.tests
+uv run python tools/tailwind.py build
+DJANGO_ENV=build uv run python manage.py collectstatic --noinput
+
+# Con .env.prod preparado:
+podman-compose -f docker-compose.prod.yml up --build -d
+```
+
+La advertencia de `.env.build` ausente es esperada: el build usa valores por
+defecto sin secretos. `migrate` y el aprovisionamiento del operador inicial son
+pasos operativos independientes; el build no modifica la base de datos.
+En desarrollo con contenedores, ejecutar `watch` en el host (el repositorio está
+montado en `/app`); consultar `docker-compose.dev.yml` para `.env.container`.
+
+## Ramas y contexto para agentes
+
+`main` representa la versión estable y `develop` la integración. Crear ramas
+`feature/...` o `fix/...` desde `develop`, revisar y probar antes de integrar.
+Al finalizar una entrega, promover los mismos cambios a `main` y comprobar su
+alineación con `develop`; durante el desarrollo pueden diferir. No igualarlas
+con `reset --hard` ni `push --force`. Las ramas históricas de funcionalidades no
+necesitan apuntar al mismo commit.
+
+Consultar [AGENTS.md](AGENTS.md) antes de modificar el proyecto y actualizar este
+README cuando cambien comandos de instalación, compilación o despliegue.

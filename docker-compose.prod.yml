@@ -25,7 +25,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - static_data:/app/staticfiles
       - media_data:/app/media
       - logs_data:/app/logs
     depends_on:
@@ -36,7 +35,6 @@ services:
 
 volumes:
   postgres_prod_data:
-  static_data:
   media_data:
   logs_data:
 

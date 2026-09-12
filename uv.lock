@@ -77,7 +77,6 @@ dependencies = [
     { name = "django" },
     { name = "django-axes" },
     { name = "django-ninja" },
-    { name = "django-tailwindcss" },
     { name = "gunicorn" },
     { name = "openpyxl" },
     { name = "pillow" },
@@ -95,7 +94,6 @@ requires-dist = [
     { name = "django", specifier = ">=6.0.6" },
     { name = "django-axes", specifier = ">=8.3.1" },
     { name = "django-ninja", specifier = ">=1.6.2" },
-    { name = "django-tailwindcss", specifier = ">=0.4.0" },
     { name = "gunicorn", specifier = ">=26.0.0" },
     { name = "openpyxl", specifier = ">=3.1.5" },
     { name = "pillow", specifier = ">=12.2.0" },
@@ -267,15 +265,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d5/7c/3307e17b872f545c88314b2737a22f965785dfb5a120d739b0131d0492c3/django_ninja-1.6.2.tar.gz", hash = "sha256:d56ae5aa4791068ef4ac9a66cfdf2fc11f507413ded35abb79c51d0d52ad6412", size = 3685599, upload-time = "2026-03-18T20:06:47.284Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/21/0c/25f72060a39632fbd2d90e9c8b6052a09cd45b0598fc06c0758d313f0052/django_ninja-1.6.2-py3-none-any.whl", hash = "sha256:20095f5900bada22ea00cf1a58af50bdb285b2354c61a9d9b47d0dc89ac462d6", size = 2374994, upload-time = "2026-03-18T20:06:45.676Z" },
-]
-
-[[package]]
-name = "django-tailwindcss"
-version = "0.4.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/69/ae/2e2c6eda46f849bc6de1b5cc831e97a8922b1077469181bf82fc3b4d5ea4/django-tailwindcss-0.4.0.tar.gz", hash = "sha256:7f3f4e44214a6a35a37e8348118b35b621081c4cd7eb7c3bce305a1818517c6e", size = 5111, upload-time = "2022-05-12T10:59:49.688Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/c0/77f95b2dfdfb524603aa1a540049056a154dd00936a6f6637dc0400942d2/django_tailwindcss-0.4.0-py3-none-any.whl", hash = "sha256:b9738102c0f149bcc53718f7e11456449b66a4c323395c8619b708d3bab71ea1", size = 7153, upload-time = "2022-05-12T10:59:47.095Z" },
 ]
 
 [[package]]

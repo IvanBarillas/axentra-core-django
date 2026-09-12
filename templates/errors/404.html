@@ -1,3 +1,4 @@
+{% load static %}
 {% load axentra_ui %}
 
 <!DOCTYPE html>
@@ -7,19 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página no encontrada | {{ tenant.app_name|default:"Axentra OS" }}</title>
 
-    <!-- Tailwind Browser Build -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- CSS compilado localmente -->
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
 
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{% static 'js/lucide.min.js' %}"></script>
 
-    {# Branding dinámico por tenant. Esta plantilla es standalone (no      #}
-    {# extiende shell/base.html), así que necesita su propio bloque       #}
-    {# @theme. type="text/tailwindcss" y el @import "tailwindcss" propio  #}
-    {# son obligatorios — ver templates/shell/base.html para el porqué.   #}
-    <style type="text/tailwindcss">
-        @import "tailwindcss";
-        @theme {
+    {# Variables CSS por institución; las utilidades se compilan en el build. #}
+    <style>
+        :root {
             --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
             --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
             --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};

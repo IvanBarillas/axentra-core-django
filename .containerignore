@@ -15,3 +15,6 @@ media/
 staticfiles/
 sent_emails/
 *.zip
+
+# Ejecutables locales de compilación
+.tools/

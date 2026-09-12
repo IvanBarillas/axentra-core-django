@@ -7,12 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ tenant.app_name|default:"Axentra OS" }}{% endblock %}</title>
 
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
 
-    {# ========================================================== #}
-    {# BRANDING DINÁMICO Y TIPOGRAFÍA/ESPACIADO FLUIDO             #}
-    {# Variables de marca por tenant + escalas responsivas sin JS. #}
-    {# ========================================================== #}
     <style>
         /* Tipografía y espaciado fluido (independientes de Tailwind @theme:
            no reemplazan la escala de tamaños nativa de Tailwind). */
@@ -30,28 +26,9 @@
         .p-fluid { padding: var(--space-responsive); }
     </style>
 
-    {# ========================================================== #}
-    {# BRANDING DINÁMICO POR TENANT                                #}
-    {# Los colores viven en @theme (no en :root a mano) para que   #}
-    {# Tailwind genere bg-/text-/border-/hover:/focus: automático  #}
-    {# a partir de --color-brand-*, igual que cualquier color base.#}
-    {#                                                             #}
-    {# type="text/tailwindcss" es OBLIGATORIO: @tailwindcss/browser#}
-    {# solo procesa @theme dentro de un <style> con este tipo. Un  #}
-    {# <style> normal deja que el navegador parsee @theme como CSS #}
-    {# estándar, donde no es una at-rule válida, y la descarta.    #}
-    {#                                                             #}
-    {# @import "tailwindcss" explícito es igual de obligatorio:    #}
-    {# el motor concatena todos los <style type="text/tailwindcss">#}
-    {# del documento y, si el resultado YA contiene la palabra     #}
-    {# "@import" (aunque sea el de Google Fonts), asume que ya     #}
-    {# declaraste tus imports y NO inyecta "@import tailwindcss"   #}
-    {# automáticamente — rompiendo TODAS las utilidades del sitio. #}
-    {# ========================================================== #}
-    <style type="text/tailwindcss">
-        @import "tailwindcss";
-        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
-        @theme {
+    {# Variables CSS por institución; las utilidades se compilan en el build. #}
+    <style>
+        :root {
             --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
             --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
             --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};

@@ -17,6 +17,11 @@ RUN uv sync --frozen --no-cache
 
 COPY . .
 
+# CLI standalone fijado y verificado; CSS listo antes de collectstatic.
+RUN python tools/tailwind.py install \
+    && python tools/tailwind.py build \
+    && rm -rf .tools
+
 # El build no depende de un archivo .env.build. Los valores seguros por
 # defecto y RepositoryEmpty permiten recolectar los estaticos.
 RUN DJANGO_ENV=build DJANGO_SETTINGS_MODULE=core.settings.development \
