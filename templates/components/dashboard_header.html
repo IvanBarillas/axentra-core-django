@@ -6,7 +6,7 @@
             </div>
             <div class="min-w-0">
                 <div class="flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-md border border-indigo-100 bg-indigo-50 px-2 py-0.5 font-mono text-xs font-black uppercase tracking-[.18em] text-indigo-700">
+                    <span class="inline-flex items-center rounded-md border border-brand-accent/20 bg-brand-accent/10 px-2 py-0.5 font-mono text-xs font-black uppercase tracking-[.18em] text-brand-accent">
                         {{ module_label }}
                     </span>
                     {% if status_label %}<span class="inline-flex items-center gap-1.5 rounded-md border border-emerald-100 bg-emerald-50 px-2 py-0.5 font-mono text-xs font-black uppercase tracking-[.18em] text-emerald-700"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>{{ status_label }}</span>{% endif %}
@@ -18,7 +18,7 @@
 
         {% if action_url or secondary_action_url or tertiary_action_url %}
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-            {% if tertiary_action_url %}<a href="{{ tertiary_action_url }}" hx-get="{{ tertiary_action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-indigo-700 transition hover:bg-indigo-100"><i data-lucide="{{ tertiary_action_icon|default:'plus' }}" class="h-4 w-4"></i>{{ tertiary_action_label }}</a>{% endif %}
+            {% if tertiary_action_url %}<a href="{{ tertiary_action_url }}" hx-get="{{ tertiary_action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl border border-brand-accent/30 bg-brand-accent/10 px-4 py-2.5 text-xs font-black uppercase tracking-widest text-brand-accent transition hover:bg-brand-accent/20"><i data-lucide="{{ tertiary_action_icon|default:'plus' }}" class="h-4 w-4"></i>{{ tertiary_action_label }}</a>{% endif %}
             {% if secondary_action_url %}<a href="{{ secondary_action_url }}" hx-get="{{ secondary_action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-black uppercase tracking-widest text-gray-600 transition hover:border-gray-300 hover:text-gray-950"><i data-lucide="{{ secondary_action_icon|default:'arrow-right' }}" class="h-4 w-4 text-gray-400"></i>{{ secondary_action_label }}</a>{% endif %}
             {% if action_url %}<a href="{{ action_url }}" hx-get="{{ action_url }}" hx-target="{{ action_target|default:'#page-content' }}" hx-swap="innerHTML" hx-push-url="true" class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-primary px-4 py-2.5 text-xs font-black uppercase tracking-widest text-white shadow-sm transition hover:brightness-110 active:scale-95"><i data-lucide="{{ action_icon|default:'arrow-right' }}" class="h-4 w-4 text-white/70"></i>{{ action_label }}</a>{% endif %}
         </div>

@@ -45,7 +45,7 @@
          style="display: none;">
         
         <div class="px-2 py-1 border-b border-white/5 pb-2">
-            <span class="text-xs font-black tracking-widest text-indigo-400 block uppercase">// MÓDULOS PERIFÉRICOS</span>
+            <span class="text-xs font-black tracking-widest text-brand-accent block uppercase">// MÓDULOS PERIFÉRICOS</span>
             <span class="text-xs text-gray-400 font-bold block mt-0.5">Gestión y Soluciones Operativas</span>
         </div>
 
@@ -53,7 +53,7 @@
             {% if launcher_data.satellite_apps %}
                 {% for card in launcher_data.satellite_apps %}
                     <a href="{% url card.url_name %}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-gray-300 hover:text-white hover:bg-white/5 transition-all">
-                        <i data-lucide="{{ card.icon|default:'layers' }}" class="w-4 h-4 text-indigo-400 shrink-0"></i>
+                        <i data-lucide="{{ card.icon|default:'layers' }}" class="w-4 h-4 text-brand-accent shrink-0"></i>
                         <span class="truncate">{{ card.title }}</span>
                     </a>
                 {% endfor %}
@@ -73,19 +73,11 @@
              x-transition:leave-start="translate-y-0 opacity-100"
              x-transition:leave-end="translate-y-10 opacity-0"
              @click.away="currentMenuOpen = false" 
-             class="fixed bottom-[74px] left-4 right-4 bg-gray-950/98 backdrop-blur-xl border rounded-[24px] shadow-[0_-15px_40px_rgba(0,0,0,0.5)] z-50 p-4 space-y-3 font-mono select-none
-                {% if modulo_actual == 'security' %}border-blue-500/30
-                {% elif modulo_actual == 'accounts' %}border-emerald-500/30
-                {% elif modulo_actual == 'organigrama' %}border-amber-500/30
-                {% else %}border-white/10{% endif %}" 
+             class="fixed bottom-[74px] left-4 right-4 bg-gray-950/98 backdrop-blur-xl border border-brand-accent/30 rounded-[24px] shadow-[0_-15px_40px_rgba(0,0,0,0.5)] z-50 p-4 space-y-3 font-mono select-none"
              style="display: none;">
-            
+
             <div class="px-2 py-1 border-b border-white/5 pb-2">
-                <span class="text-xs font-black tracking-widest block uppercase
-                    {% if modulo_actual == 'security' %}text-blue-400
-                    {% elif modulo_actual == 'accounts' %}text-emerald-400
-                    {% elif modulo_actual == 'organigrama' %}text-amber-400
-                    {% else %}text-gray-400{% endif %}">
+                <span class="text-xs font-black tracking-widest block uppercase text-brand-accent">
                     // ACCIONES DE ENTORNO: {{ modulo_actual }}
                 </span>
                 <span class="text-xs text-gray-400 font-bold block mt-0.5">Sub-navegación operativa autorizada</span>
@@ -116,8 +108,8 @@
             
             <!-- 1. INICIO -->
             <a href="/" class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none">
-                <i data-lucide="home" class="w-4 h-4 text-blue-500"></i>
-                <span class="text-xs font-black tracking-wider uppercase text-blue-500 text-contraste">Inicio</span>
+                <i data-lucide="home" class="w-4 h-4 text-brand-accent"></i>
+                <span class="text-xs font-black tracking-wider uppercase text-brand-accent text-contraste">Inicio</span>
             </a>
 
             <!-- 🔀 ACCIONES DE SESIÓN AUTENTICADA -->
@@ -126,18 +118,10 @@
                 <!-- 2. BOTÓN DE MÓDULO INTELIGENTE CON COLOR INSTITUCIONAL -->
                 {% if modulo_actual and modulo_actual != 'launcher' %}
                     <div class="relative">
-                        <button @click="currentMenuOpen = !currentMenuOpen; coreMenuOpen = false; satelliteMenuOpen = false" 
-                                class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none cursor-pointer transition duration-150 group
-                                {% if modulo_actual == 'security' %}text-blue-500 hover:text-blue-400
-                                {% elif modulo_actual == 'accounts' %}text-emerald-500 hover:text-emerald-400
-                                {% elif modulo_actual == 'organigrama' %}text-amber-500 hover:text-amber-400
-                                {% else %}text-white/70 hover:text-white{% endif %}">
-                            
-                            <i data-lucide="layout-grid" class="w-4 h-4 transition-transform group-active:scale-90
-                                {% if modulo_actual == 'security' %}text-blue-500
-                                {% elif modulo_actual == 'accounts' %}text-emerald-500
-                                {% elif modulo_actual == 'organigrama' %}text-amber-500
-                                {% else %}text-gray-400{% endif %}"></i>
+                        <button @click="currentMenuOpen = !currentMenuOpen; coreMenuOpen = false; satelliteMenuOpen = false"
+                                class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none cursor-pointer transition duration-150 group text-brand-accent hover:brightness-110">
+
+                            <i data-lucide="layout-grid" class="w-4 h-4 text-brand-accent transition-transform group-active:scale-90"></i>
                             
                             <span class="text-xs font-black tracking-widest uppercase text-contraste truncate max-w-[70px]">
                                 {{ modulo_actual }}
@@ -158,10 +142,10 @@
 
                 <!-- 4. MODULOS SATÉLITES -->
                 {% if launcher_data.satellite_apps %}
-                    <button @click="satelliteMenuOpen = !satelliteMenuOpen; coreMenuOpen = false; currentMenuOpen = false" 
+                    <button @click="satelliteMenuOpen = !satelliteMenuOpen; coreMenuOpen = false; currentMenuOpen = false"
                             class="flex flex-col items-center justify-center gap-0.5 text-center py-1 min-w-[64px] focus:outline-none cursor-pointer"
-                            :class="satelliteMenuOpen ? 'text-indigo-400 font-black' : 'text-white/70 hover:text-white'">
-                        <i data-lucide="layers" class="w-4 h-4" :class="satelliteMenuOpen ? 'text-indigo-400' : 'text-gray-400'"></i>
+                            :class="satelliteMenuOpen ? 'text-brand-accent font-black' : 'text-white/70 hover:text-white'">
+                        <i data-lucide="layers" class="w-4 h-4" :class="satelliteMenuOpen ? 'text-brand-accent' : 'text-gray-400'"></i>
                         <span class="text-xs font-bold tracking-wider uppercase text-contraste">Satélites</span>
                     </button>
                 {% endif %}

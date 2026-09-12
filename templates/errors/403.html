@@ -1,40 +1,83 @@
-{% extends 'base.html' %}
 {% load axentra_ui %}
 
-{% block title %}Acceso restringido | {{ tenant.app_name }}{% endblock %}
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso restringido | {{ tenant.app_name|default:"Axentra OS" }}</title>
 
-{% block content %}
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4 w-full select-none animate-fade-in relative overflow-hidden">
-    
-    <div class="max-w-lg w-full bg-white p-8 md:p-10 rounded-2xl text-center border border-gray-200/80 shadow-xl z-10">
-        <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-5 border border-amber-200 text-amber-600">
-            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+    <!-- Tailwind Browser Build -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    {# Branding dinámico por tenant. Esta plantilla es standalone (no      #}
+    {# extiende shell/base.html), así que necesita su propio bloque       #}
+    {# @theme. type="text/tailwindcss" y el @import "tailwindcss" propio  #}
+    {# son obligatorios — ver templates/shell/base.html para el porqué.   #}
+    <style type="text/tailwindcss">
+        @import "tailwindcss";
+        @theme {
+            --color-brand-primary: {{ tenant.primary_color|default:"#6B1D2F" }};
+            --color-brand-secondary: {{ tenant.secondary_color|default:"#4A5568" }};
+            --color-brand-accent: {{ tenant.accent_color|default:"#059669" }};
+        }
+    </style>
+
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fade-in 0.35s ease-out both; }
+    </style>
+</head>
+
+<body class="h-full antialiased bg-gray-50 text-gray-950">
+
+    <div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center px-4 w-full select-none animate-fade-in relative overflow-hidden">
+
+        <div class="max-w-lg w-full bg-white p-8 md:p-10 rounded-2xl text-center border border-gray-200/80 shadow-xl z-10">
+            <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-5 border border-amber-200 text-amber-600">
+                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+
+            <h2 class="text-2xl font-bold text-gray-950 tracking-tight">No tienes acceso a esta sección</h2>
+            <p class="text-xs uppercase font-bold tracking-widest text-amber-600 font-mono mb-5">Acceso restringido · Error 403</p>
+
+            <div class="bg-gray-50/60 p-5 rounded-xl border border-gray-200 text-left mb-6 space-y-2.5">
+                <p class="text-gray-600 text-xs font-semibold leading-relaxed">
+                    Tu cuenta institucional no tiene el permiso necesario para realizar esta operación.
+                </p>
+                <p class="text-gray-400 text-xs font-medium leading-relaxed">
+                    Si necesitas ingresar por tus funciones, solicita acceso al responsable de tu dependencia o al administrador del sistema.
+                </p>
+            </div>
+
+            <div class="flex gap-3 justify-center">
+                <a href="javascript:history.back()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold py-3 px-6 rounded-xl transition uppercase tracking-wider font-mono border border-gray-200">
+                    Regresar
+                </a>
+                <a href="{% url 'index_hub' %}" class="bg-brand-primary hover:brightness-110 text-white text-xs font-bold py-3 px-6 rounded-xl transition shadow-sm uppercase tracking-wider font-mono">
+                    Ir al inicio
+                </a>
+            </div>
         </div>
-        
-        <h2 class="text-2xl font-bold text-gray-950 tracking-tight">No tienes acceso a esta sección</h2>
-        <p class="text-xs uppercase font-bold tracking-widest text-amber-600 font-mono mb-5">Acceso restringido · Error 403</p>
-        
-        <div class="bg-gray-50/60 p-5 rounded-xl border border-gray-200 text-left mb-6 space-y-2.5">
-            <p class="text-gray-600 text-xs font-semibold leading-relaxed">
-                Tu cuenta institucional no tiene el permiso necesario para realizar esta operación.
-            </p>
-            <p class="text-gray-400 text-xs font-medium leading-relaxed">
-                Si necesitas ingresar por tus funciones, solicita acceso al responsable de tu dependencia o al administrador del sistema.
-            </p>
-        </div>
-        
-        <div class="flex gap-3 justify-center">
-            <a href="javascript:history.back()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold py-3 px-6 rounded-xl transition uppercase tracking-wider font-mono border border-gray-200">
-                Regresar
-            </a>
-            <a href="{% url 'index_hub' %}" class="bg-gray-950 hover:bg-gray-900 text-white text-xs font-bold py-3 px-6 rounded-xl transition shadow-sm uppercase tracking-wider font-mono">
-                Ir al inicio
-            </a>
-        </div>
+
+        <p class="text-center text-xs font-bold text-gray-400 mt-6 font-mono uppercase tracking-widest z-10">
+            Axentra OS · Control de acceso institucional
+        </p>
     </div>
-    
-    <p class="text-center text-xs font-bold text-gray-400 mt-6 font-mono uppercase tracking-widest z-10">
-        Axentra OS · Control de acceso institucional
-    </p>
-</div>
-{% endblock %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+        });
+    </script>
+
+</body>
+</html>

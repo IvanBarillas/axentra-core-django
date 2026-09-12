@@ -40,6 +40,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'axes',
+    'tailwindcss',
 
 ]
 
@@ -205,3 +206,11 @@ AXENTRA_OWNER_DEFAULT_PASSWORD = config(
     "AXENTRA_OWNER_DEFAULT_PASSWORD",
     default="",
 )
+
+# =========================================================================
+# CONFIGURACIÓN TAILWIND CSS (django-tailwindcss Standalone CLI)
+# =========================================================================
+TAILWINDCSS_CLI_PATH = BASE_DIR / "bin"
+TAILWINDCSS_CLI_FILE = TAILWINDCSS_CLI_PATH / "tailwindcss"
+TAILWINDCSS_CONFIG_FILE = BASE_DIR / "tailwind.config.js"
+TAILWINDCSS_OUTPUT_FILE = BASE_DIR / "static" / "css" / "tailwind.css"
